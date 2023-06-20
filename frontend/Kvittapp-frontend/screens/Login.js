@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { Image, Text, View, StyleSheet } from "react-native";
+import RectangularButton from "../components/RectangularButton";
 
 const Login = ({ onLogin }) => {
   const [selectedUSer, setSelectedUSer] = useState("");
@@ -22,6 +23,7 @@ const Login = ({ onLogin }) => {
             height: 180,
             width: 180,
             alignSelf: "center",
+            tintColor: "#81A7FF",
           }}
           source={require("../assets/kvitappPicture.png")}
         />
@@ -31,12 +33,13 @@ const Login = ({ onLogin }) => {
             height: 60,
             width: 220,
             alignSelf: "center",
+            tintColor: "#81A7FF",
           }}
           source={require("../assets/KvittappLogo.png")}
         />
       </View>
       <View style={styles.userContainer}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             styles.userButton,
             selectedUSer === "1" && styles.selectedUserButton,
@@ -61,9 +64,21 @@ const Login = ({ onLogin }) => {
           {selectedUSer === "2" && (
             <View style={styles.selectedUserIndicator} />
           )}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
+          <View style={{width:'100%'}}>
+          <RectangularButton smallButton={false} text='Login using phone number' function={handleLoginButtonPress } />
+        </View>
+        <View style={{width:'100%'}}>
+            <RectangularButton smallButton={false} text='Login using BankID' />
+        </View>
+        <View style={{width:'100%'}}>
+            <RectangularButton smallButton={false} text='Create an Account' />
+          </View>
+
+        
       </View>
-      <TouchableOpacity onPress={handleLoginButtonPress}>
+      {/* <TouchableOpacity onPress={handleLoginButtonPress}>
         <View style={styles.loginContainer}>
           <Image
             style={styles.logo}
@@ -71,7 +86,7 @@ const Login = ({ onLogin }) => {
           />
           <Text style={styles.loginText}>Logga in med BankID</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -83,8 +98,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   userContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
     alignItems: "center",
     marginVertical: 20,
   },

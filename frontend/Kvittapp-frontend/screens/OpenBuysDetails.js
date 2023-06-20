@@ -1,20 +1,14 @@
 import { Camera } from "expo-camera";
 import React, { useEffect, useState } from "react";
 import {
-  Button,
-  FlatList,
-  Image,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
-import AddImageContainer from "../components/AddImageContainer";
 import { CameraModule } from "../components/CameraModule";
 import RectangularButton from "../components/RectangularButton";
-import TextContainer from "../components/TextContainer";
 import { addReturn } from "../services/add";
 import Dropdown from "../components/NewDropDown";
 

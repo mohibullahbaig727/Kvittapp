@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import * as Font from "expo-font";
 import SelectedCardsProvider from "./SelectedCardProvider";
 import { HomeStack } from "./routes/homeStack";
+import CreateAccountScreen from "./screens/CreateAccountScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -178,7 +179,8 @@ export default function App() {
           </NavigationContainer>
         </SelectedCardsProvider>
       ) : (
-        <Login onLogin={handleLogin} />
+      <Login onLogin={handleLogin} />
+          //<CreateAccountScreen/>
       )}
     </View>
   );

@@ -14,6 +14,10 @@ import CircularButton from "../components/CircularButton";
 import { API_BASE_URL } from "../constants";
 import TransparentDialogBox from "../components/DialogBox";
 import RemoveCard from "../services/delete";
+import { createState } from 'state-pool';
+
+
+const selected = createState(false);
 
 const API_URL = `${API_BASE_URL}/userDetails/1`;
 const Cards = ({ route, navigation }) => {
@@ -23,7 +27,7 @@ const Cards = ({ route, navigation }) => {
   const [isDialogVisible, setisDialogVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  const [radioSelected, setRadioSelected] = useState(false);
+  const [radioSelected, setRadioSelected] = selected.useState();
 
   const handleRadioPress = (value) => {
     setRadioSelected(value);

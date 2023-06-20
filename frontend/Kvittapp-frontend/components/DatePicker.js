@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Platform,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { View, StyleSheet, Platform, TouchableOpacity, Text } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 const MyDatePicker = (props) => {
@@ -17,10 +11,28 @@ const MyDatePicker = (props) => {
     setShowDatePicker(Platform.OS === "ios"); // Hide on iOS after selecting date
     if (selectedDate) {
       setDate(selectedDate);
+      props.onDateChange(selectedDate); // Call the callback function with the selected date
     }
   };
 
-  console.log(date[1]);
+  // Format date and time separately
+  // const formatDate = (date) => {
+  //   const formattedDate = date.toLocaleDateString("en-US", {
+  //     year: "numeric",
+  //     month: "2-digit",
+  //     day: "2-digit",
+  //   });
+  //   return formattedDate.replace(/\//g, "-");
+  // };
+
+  // const formatTime = (date) => {
+  //   const formattedTime = date.toLocaleTimeString("en-US", {
+  //     hour: "2-digit",
+  //     minute: "2-digit",
+  //     second: "2-digit",
+  //   });
+  //   return formattedTime;
+  // };
 
   return (
     <View>
@@ -37,7 +49,7 @@ const MyDatePicker = (props) => {
         style={styles.container}
       >
         <Text style={styles.label}>
-          {date == Date() ? props.label : date[0]}
+          {`${props.label}`}
         </Text>
       </TouchableOpacity>
     </View>

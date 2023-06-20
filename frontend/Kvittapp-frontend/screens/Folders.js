@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { Image, ScrollView, Text, TouchableOpacity, View, StyleSheet, RefreshControl } from "react-native";
 import RectangularButton from "../components/RectangularButton";
 import CreateFolderDialog from "../components/CreateFolderDialog";
 import { API_BASE_URL } from "../constants";
+import CardContext from "../CardContext";
 
 const FoldersScreen = ({ navigation }) => {
   const [isDeleteSelected, setIsDeleteSelected] = useState(false);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [folderData, setFolderData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const [folderName, setFolderName] = useState("");
-  const ID_Folder = "6";
-  const Folder_name = "six folder";
-  const Reciept_Number = 236758934;
+  const ID_Folder = "7";
+
+  const contextData = useContext(CardContext)
+  const Folder_name = contextData.folderName
 
   const API_URL = `${API_BASE_URL}/folders/1`;
 
@@ -22,6 +24,7 @@ const FoldersScreen = ({ navigation }) => {
       const json = await response.json();
       setFolderData(json);
       console.log(folderData);
+      setRefreshing(false)
     } catch (error) {
       console.error(error);
       setDataFetched(false);
@@ -31,6 +34,12 @@ const FoldersScreen = ({ navigation }) => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleRefresh = () => {
+    // Set refreshing status to true and trigger fetch data function
+    setRefreshing(true);
+    fetchData();
+  };
 
   return (
     <View style={styles.container}>
@@ -48,7 +57,6 @@ const FoldersScreen = ({ navigation }) => {
               body: JSON.stringify({
                 ID_Folder,
                 Folder_name,
-                Reciept_Number,
               }),
             });
 
@@ -59,6 +67,8 @@ const FoldersScreen = ({ navigation }) => {
             } else {
               console.log("Error", "Failed to add new folder");
             }
+
+            setIsDialogVisible(false)
           } catch (error) {
             console.error("Error adding new folder:", error);
           }
@@ -80,7 +90,11 @@ const FoldersScreen = ({ navigation }) => {
         />
       </View>
 
-      <ScrollView alwaysBounceVertical={true}>
+      <ScrollView alwaysBounceVertical={true}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }
+      >
         {folderData.map((data) => (
           <TouchableOpacity
             key={data.ID_Folder}

@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   ActivityIndicator,
   FlatList,
   Image,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -13,6 +14,8 @@ import { useState } from "react";
 import { API_BASE_URL } from "../constants";
 import CircularButton from "../components/CircularButton";
 import { useNavigation } from "@react-navigation/native";
+import SortButton from "../components/SortButton";
+import CardContext from "../CardContext";
 
 const Item = ({ item, onPress, folderId, isRemoveReciept }) => (
   <TouchableOpacity onPress={onPress}>
@@ -21,6 +24,7 @@ const Item = ({ item, onPress, folderId, isRemoveReciept }) => (
         flexDirection: "row",
         justifyContent: "space-between",
         borderBottomWidth: 1,
+        borderBottomColor: '#e6e6e6',
         paddingVertical: 10,
         paddingHorizontal: 16,
         alignItems: "center",
@@ -96,16 +100,22 @@ const ReceiptsInFolderScreen = ({ route }) => {
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [receiptAdded, setReceiptAdded] = useState();
 
+  const { isAddReceiptToFolder, updateIsAddReceiptToFolder } = useContext(CardContext);
+  
+
+  console.log(isAddReceiptToFolder)
+
   const folderDetails = route.params?.data;
 
   const navigation = useNavigation();
 
-  const folderName = "sixth folder";
-  const folderId = "7";
-  const API_URL = `${API_BASE_URL}/ReceiptsInFolder/1/${folderDetails.ID_Folder}`;
-  const recID = 736322242;
 
-  console.log(folderName, folderId, recID);
+  const API_URL = `${API_BASE_URL}/ReceiptsInFolder/1/${folderDetails.ID_Folder}`;
+ 
+
+  const folderId = folderDetails.ID_Folder;
+  const recId = '193847372';
+  const folderName = folderDetails.Folder_name;
 
   const fetchData = async () => {
     try {
@@ -135,29 +145,43 @@ const ReceiptsInFolderScreen = ({ route }) => {
   };
 
   return (
-    <View>
+    <View style={{backgroundColor:'white', height:'100%'}}>
       {isDataFetched ? (
         <FlatList
           ListHeaderComponent={
-            <View style={{ paddingHorizontal: 32 }}>
+            <View style={{  }}>
               <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
+                  paddingHorizontal: 32,
+                  marginVertical:12 
                 }}
               >
-                <View style={{ flexDirection: "row" }}>
+                <View style={{ flexDirection: "row", alignSelf: "center" }}>
                   <Image
                     style={{ height: 32, width: 32 }}
                     source={require("../assets/icons/folderIcon.png")}
                   />
-                  <Text>{folderDetails.Folder_name}</Text>
+                  <Text
+                    style={{
+                      marginLeft: 12,
+                      alignSelf: "center",
+                      fontSize: 14,
+                      fontFamily: "BalooChettan2-Bold",
+                    }}
+                  >
+                    {folderDetails.Folder_name}
+                  </Text>
                 </View>
                 <View>
                   <RectangularButton
                     smallButton={true}
                     text="Add Receipts"
-                    function={() => navigation.navigate("Kvitton")}
+                    function={() => {
+                      updateIsAddReceiptToFolder(true)
+                      navigation.navigate("Kvitton")
+                    }}
                   />
                   <RectangularButton
                     smallButton={true}
@@ -166,6 +190,29 @@ const ReceiptsInFolderScreen = ({ route }) => {
                   />
                 </View>
               </View>
+
+              <View
+              style={{
+                height: 30,
+                borderWidth: 1,
+                borderColor: "#E6E6E6",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingHorizontal: 20,
+                alignItems: "center",
+              }}
+            >
+              <SortButton
+                //onPress={sortDataByDate}
+                child={<Text style={styles.whiteText}>Date</Text>}
+                //isAsc={isAscDate}
+              />
+              <SortButton
+                //onPress={sortDataByAmount}
+                child={<Text style={styles.whiteText}>Amount</Text>}
+                //isAsc={isAscAmount}
+              />
+            </View>
             </View>
           }
           data={folderData[0]}
@@ -193,7 +240,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
                 body: JSON.stringify({
                   folderId,
                   folderName,
-                  recID,
+                  recId,
                 }),
               });
 
@@ -215,5 +262,13 @@ const ReceiptsInFolderScreen = ({ route }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  whiteText: {
+    color: "black",
+    marginRight: 4,
+    fontFamily: "BalooChettan2-Bold",
+  },
+});
 
 export default ReceiptsInFolderScreen;

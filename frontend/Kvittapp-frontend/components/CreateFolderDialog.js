@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Modal,
   StyleSheet,
@@ -9,9 +9,11 @@ import {
   TextInput,
 } from "react-native";
 import InputField from "./InputField";
+import CardContext from "../CardContext";
 
 const CreateFolderDialog = ({ visible, onClose, title, message, onYes }) => {
   const [fadeAnim] = useState(new Animated.Value(0));
+  const { updateFolderName } = useContext(CardContext);
 
   useEffect(() => {
     if (visible) {
@@ -52,7 +54,7 @@ const CreateFolderDialog = ({ visible, onClose, title, message, onYes }) => {
           </View>
 
           <View style={{ width: "100%" }}>
-            <InputField placeholder={'Enter a folder name'}/>
+            <InputField placeholder={'Enter a folder name'} onTextChange={ name=> updateFolderName(name) } />
           </View>
 
           <View style={{ alignSelf: "flex-start" }}>

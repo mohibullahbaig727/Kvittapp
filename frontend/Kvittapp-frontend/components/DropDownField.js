@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 const DropDownField = ({ label, options, onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState();
 
   const toggleDropDown = () => {
     setIsOpen(!isOpen);
@@ -19,7 +19,6 @@ const DropDownField = ({ label, options, onSelect }) => {
     <View style={styles.container}>
       <TouchableOpacity style={styles.dropDownButton} onPress={toggleDropDown}>
         <Text style={styles.label}>{label}</Text>
-        <Text style={styles.selectedOption}>{selectedOption}</Text>
       </TouchableOpacity>
       {isOpen && (
         <View style={styles.optionsContainer}>
@@ -29,7 +28,7 @@ const DropDownField = ({ label, options, onSelect }) => {
               style={styles.optionButton}
               onPress={() => handleOptionSelect(option)}
             >
-              <Text style={styles.optionText}>{option}</Text>
+              <Text style={styles.optionText}>{option.from} - {option.to }</Text>
             </TouchableOpacity>
           ))}
         </View>

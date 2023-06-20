@@ -7,6 +7,8 @@ const CardComponent = (props) => {
   const cardData = props?.cardData;
   const { selectedCards, updateSelectedCards } = useContext(CardContext);
 
+  console.log(props, 'moo')
+
   return (
     <View>
       <View

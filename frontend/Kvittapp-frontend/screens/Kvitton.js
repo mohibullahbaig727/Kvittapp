@@ -14,8 +14,9 @@ import SortButton from "../components/SortButton";
 import { API_BASE_URL } from "../constants";
 import CardContext from "../CardContext";
 import { useNavigation } from "@react-navigation/native";
+import SquareRadioButton from "../components/SquareRadioButton";
 
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
+const Item = ({ item, onPress, icon}) => (
   <TouchableOpacity onPress={onPress}>
     <View
       style={{
@@ -56,7 +57,7 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
         }}
       >
         <Text>{item.Total_Amount} kr</Text>
-        <CircularButton marginLeft={6} text=">" />
+        {icon ? <SquareRadioButton label = ' '/> :   <CircularButton marginLeft={6} text=">" /> }
       </View>
     </View>
   </TouchableOpacity>
@@ -67,7 +68,7 @@ const Kvitton = ({ route }) => {
 
   const [data, setData] = useState([]);
 
-  const [sortedData, setSortedData] = useState([]);
+  const [sortedData, setSortedData] = useState(null);
 
   const [isAscDate, setIsAscDate] = useState(true);
 
@@ -75,17 +76,18 @@ const Kvitton = ({ route }) => {
 
   const [isDataFetched, setDataFetched] = useState(false);
 
-  const { selectedCards, updateSelectedCards } = useContext(CardContext);
+  const { selectedCards, isAddReceiptToFolder, updateIsAddReceiptToFolder } = useContext(CardContext);
 
-  const [fltr, setfltr] = useState();
+  const contextProvider = useContext(CardContext);
 
-  const [isAddToFolderSelected, setIsAddToFolderSelected] = useState(false);
+  const [fltr, setfltr] = useState(null);
+
 
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, []); 
 
   const cardNumbersArray = selectedCards.map((card) => card.cardNumber);
   const API_URL = `${API_BASE_URL}/allReciepts/1?cardNumber=${cardNumbersArray}`;
@@ -96,16 +98,16 @@ const Kvitton = ({ route }) => {
     try {
       const response = await fetch(API_URL);
       const json = await response.json();
-      setData(json);
+      setData( json);
       setDataFetched(true);
       setRefreshing(false);
       setfltr(
         filterDataByAmountAndDatetimeRange(
           json[0],
-          235,
-          3000,
-          "2022-01-20 11:30:00",
-          "2023-07-30 14:30:00"
+          contextProvider.filterParams.selectedAmountRange?.from,
+          contextProvider.filterParams.selectedAmountRange?.to,
+          contextProvider.filterParams?.selectedStartDate,
+          contextProvider.filterParams?.selectedEndDate
         )
       );
     } catch (error) {
@@ -165,6 +167,8 @@ const Kvitton = ({ route }) => {
         onPress={() => navigation.navigate("KvittoDetails", { data: item })}
         backgroundColor={backgroundColor}
         textColor={color}
+        icon={isAddReceiptToFolder}
+        
       />
     );
   };
@@ -213,7 +217,8 @@ const Kvitton = ({ route }) => {
             {/* ....................................... */}
           </View>
         }
-        data={sortedData == [] ? sortedData : data[0]}
+      data={sortedData == [] ? sortedData : data[0]}
+        //data={fltr !== [] ? fltr : sortedData !== [s] ? sortedData : data[0]}
         renderItem={renderItem}
         extraData={selectedId}
       />

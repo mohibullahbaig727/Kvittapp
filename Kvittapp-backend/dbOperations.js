@@ -30,7 +30,7 @@ async function getReceiptsInFolder(ID_User, ID_Folder) {
     let pool = await sql.connect(config);
     let reciepts = await pool
       .request()
-      .input("input_parameter", sql.Int, ID_User)
+      .input("input_parameter", sql.VarChar, ID_User)
       .input("input_ID_Folder", sql.Int, ID_Folder).query(`
       SELECT DISTINCT rd.ID_Reciept, sd.Logo_URL, rd.store_Name, rd.Datetime, rd.Total_Amount, fd.Folder_name, fd.Reciept_Number
       FROM dim.Reciept_details rd

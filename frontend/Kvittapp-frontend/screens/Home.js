@@ -8,11 +8,13 @@ import { KvittonStack } from "../routes/KvittonStack";
 import { OpenBuyStack } from "../routes/OpenBuysStack";
 import { ReturnStack } from "../routes/ReturnStack";
 import SearchBar from "../components/SearchBar";
+import BottomModalSheetFilter from "../components/BottomModalSheetFilter";
 
 const Tab = createMaterialTopTabNavigator();
 
 const TabScreen = () => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
 
   const navigation = useNavigation();
 
@@ -27,7 +29,7 @@ const TabScreen = () => {
       label: "Filters",
       value: "filters",
       image: require("../assets/icons/filter_icon.png"),
-      function: () => console.log("Function for Option 1"),
+      function: () => setFilterModalVisible(true),
     },
     {
       label: "Folders",
@@ -39,16 +41,15 @@ const TabScreen = () => {
       label: "Scan Receipt",
       value: "scanReceipt",
       image: require("../assets/icons/scan_receipt_icon.png"),
-      function: () => console.log('scan kvitto'),
+      function: () => console.log("scan kvitto"),
     },
     {
       label: "Cards",
       value: "cards",
       image: require("../assets/icons/bank_card_icon.png"),
       function: () => {
-        navigation.navigate("Cards")
-    
-       },
+        navigation.navigate("Cards");
+      },
     },
     {
       label: "Create a return",
@@ -70,14 +71,18 @@ const TabScreen = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      <View style={{ flexDirection: "row", justifyContent: "space-around",}}>
-        <View style={{ flex: 3, marginLeft:16 }}>
-        <SearchBar />
+      <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+        <View style={{ flex: 3, marginLeft: 16 }}>
+          <SearchBar />
+          <BottomModalSheetFilter
+            visible={filterModalVisible}
+            onClose={() => setFilterModalVisible(false)}
+          />
         </View>
 
         <TouchableOpacity
           onPress={toggleSidebar}
-          style={{ flex: 1, alignItems: "center" ,alignSelf:'center'}}
+          style={{ flex: 1, alignItems: "center", alignSelf: "center" }}
         >
           <Image
             source={require("../assets/icons/menu_icon.png")}
@@ -89,13 +94,13 @@ const TabScreen = () => {
           />
         </TouchableOpacity>
       </View>
-      <Tab.Navigator  tabBarOptions={{
-        activeTintColor: '#81A7FF', // Color of the active tab
-        inactiveTintColor: 'black',
-        labelStyle: { fontSize: 16,
-          fontFamily: "BalooChettan2-Bold",}, // Styling for the tab labels
-      }}>
-        
+      <Tab.Navigator
+        tabBarOptions={{
+          activeTintColor: "#81A7FF", // Color of the active tab
+          inactiveTintColor: "black",
+          labelStyle: { fontSize: 16, fontFamily: "BalooChettan2-Bold" }, // Styling for the tab labels
+        }}
+      >
         <Tab.Screen name="Receipts" component={KvittonStack} />
         <Tab.Screen name="Open Buys" component={OpenBuyStack} />
         <Tab.Screen name="Returns" component={ReturnStack} />
@@ -116,7 +121,7 @@ const TabScreen = () => {
                         height: 18,
                         width: 18,
                         alignSelf: "center",
-                        tintColor: '#81A7FF'
+                        tintColor: "#81A7FF",
                       }}
                     />
                     <Text style={styles.label}>{options.label}</Text>
@@ -156,7 +161,7 @@ const styles = StyleSheet.create({
     width: 150,
     backgroundColor: "#fff",
     borderLeftWidth: 3,
-    borderTopWidth:1,
+    borderTopWidth: 1,
     borderLeftColor: "#e6e6e6",
     padding: 20,
     zIndex: 2,
@@ -173,9 +178,8 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontFamily: "BalooChettan2-Bold",
-    marginLeft: 8
+    marginLeft: 8,
   },
 });
-
 
 export default TabScreen;
