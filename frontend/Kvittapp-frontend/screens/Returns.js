@@ -90,7 +90,6 @@ const Returns = ({ navigation }) => {
       setData(json[0]);
       setStatus([]);
       setRefreshing(false)
-      console.log(data, 'mooo');
     } catch (error) {
       console.error(error);
     }

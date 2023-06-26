@@ -7,13 +7,7 @@ const CircularButton = (props) => {
       style={[styles.roundButton1, { marginLeft: props.marginLeft }]}
       onPress={props.function}
     >
-      <Image
-        style={{
-          height: 12,
-          width: 12,
-        }}
-        source={require("../assets/icons/arrowRightIcon.png")}
-      />
+      {props.child}
     </TouchableOpacity>
   );
 };

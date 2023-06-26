@@ -23,7 +23,6 @@ const TransactionDetails = ({ route }) => {
         const response = await fetch(API_URL);
         const json = await response.json();
         setStoreData(json[0]);
-        console.log(storeData, "mooooo");
       } catch (error) {
         console.error(error);
       }

@@ -21,7 +21,6 @@ const OpenBuysDetails = ({ navigation, route }) => {
 
   const data = route?.params?.data;
 
-  console.log(optionalReason, "mooo");
 
   useEffect(() => {
     (async () => {

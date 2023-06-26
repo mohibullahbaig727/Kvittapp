@@ -246,7 +246,7 @@ router.delete("/deleteFolder/:ID_User/:ID_Folder", async (req, res) => {
 
 //delete a folder api
 router.delete(
-  "/deleteFolder/:ID_User/:ID_Folder/:Reciept_Number",
+  "/deleteReceiptInFolder/:ID_User/:ID_Folder/:Reciept_Number",
   async (req, res) => {
     const ID_User = req.params.ID_User;
     const ID_Folder = req.params.ID_Folder;

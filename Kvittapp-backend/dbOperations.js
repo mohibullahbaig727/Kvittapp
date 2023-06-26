@@ -162,7 +162,6 @@ async function getFolders(userId) {
 
 //function to delete cards
 async function removeCard(ID_User, cardNumber) {
-  console.log(cardNumber, "mooooo");
   try {
     let pool = await sql.connect(config);
 

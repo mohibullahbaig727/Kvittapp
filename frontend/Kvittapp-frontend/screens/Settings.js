@@ -7,7 +7,6 @@ import CardContext from "../CardContext";
 const Settings = ({ navigation }) => {
   const { selectedCards, updateSelectedCards } = useContext(CardContext);
 
-  console.log(selectedCards, "mooo");
   return (
     <View style={styles.container}>
       <View>

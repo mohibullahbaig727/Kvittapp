@@ -6,7 +6,8 @@ const SelectedCardsProvider = ({ children }) => {
   const [folderName, setFolderName] = useState('');
   const [filterParams, setFilterParams] = useState({})
   const [isAddReceiptToFolder, setIsAddReceiptToFolder] = useState(false)
-  const [receiptToFolderParams, setReceiptToFolderParams] = useState({})
+  const [selectedFolderId, setSelectedFolderId] = useState(null)
+  const [receiptToFolderParams, setReceiptToFolderParams] = useState([])
 
   const updateSelectedCards = (newSelectedCards,) => {
     setSelectedCards(newSelectedCards);
@@ -20,12 +21,19 @@ const SelectedCardsProvider = ({ children }) => {
     setFilterParams(newFilterParams);
   };
 
+  const updateSelectedFolderId = (newSelectedFolderId) => {
+    setSelectedFolderId(newSelectedFolderId);
+  };
+
+
   const updateIsAddReceiptToFolder = (newIsAddReceiptToFolder) => {
     setIsAddReceiptToFolder(newIsAddReceiptToFolder);
   };
 
+
+
   const updateReceiptToFolderParams = (newReceiptToFolderParams) => {
-    setReceiptToFolderParams(newReceiptToFolderParams);
+    setReceiptToFolderParams(...receiptToFolderParams ,newReceiptToFolderParams);
   };
 
 
@@ -40,6 +48,8 @@ const SelectedCardsProvider = ({ children }) => {
         updateFilterParams,
         isAddReceiptToFolder,
         updateIsAddReceiptToFolder,
+        selectedFolderId,
+        updateSelectedFolderId,
         receiptToFolderParams,
         updateReceiptToFolderParams
       }}

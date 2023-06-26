@@ -63,9 +63,9 @@ const FoldersScreen = ({ navigation }) => {
             const data = await response.json();
 
             if (response.ok) {
-              console.log("Success", "New folder added successfully", data);
+              console.log("Success", "New receipt successfully", data);
             } else {
-              console.log("Error", "Failed to add new folder");
+              console.log("Error", "Failed to add new receipt");
             }
 
             setIsDialogVisible(false)

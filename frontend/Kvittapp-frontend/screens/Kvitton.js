@@ -15,8 +15,9 @@ import { API_BASE_URL } from "../constants";
 import CardContext from "../CardContext";
 import { useNavigation } from "@react-navigation/native";
 import SquareRadioButton from "../components/SquareRadioButton";
+import RectangularButton from "../components/RectangularButton";
 
-const Item = ({ item, onPress, icon}) => (
+const Item = ({ item, onPress, icon, contextFunctions }) => (
   <TouchableOpacity onPress={onPress}>
     <View
       style={{
@@ -57,7 +58,14 @@ const Item = ({ item, onPress, icon}) => (
         }}
       >
         <Text>{item.Total_Amount} kr</Text>
-        {icon ? <SquareRadioButton label = ' '/> :   <CircularButton marginLeft={6} text=">" /> }
+        {icon ? (
+          <SquareRadioButton
+            label=" "
+            onPress={() => contextFunctions.updateIsAddReceiptToFolder(item)}
+          />
+        ) : (
+          <CircularButton marginLeft={6} text=">" />
+        )}
       </View>
     </View>
   </TouchableOpacity>
@@ -76,18 +84,25 @@ const Kvitton = ({ route }) => {
 
   const [isDataFetched, setDataFetched] = useState(false);
 
-  const { selectedCards, isAddReceiptToFolder, updateIsAddReceiptToFolder } = useContext(CardContext);
+  const {
+    selectedCards,
+    isAddReceiptToFolder,
+    receiptToFolderParams,
+    selectedFolderId,
+    updateIsAddReceiptToFolder
+  } = useContext(CardContext);
+
+  const contextFunction = useContext(CardContext);
 
   const contextProvider = useContext(CardContext);
 
   const [fltr, setfltr] = useState(null);
 
-
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchData();
-  }, []); 
+  }, []);
 
   const cardNumbersArray = selectedCards.map((card) => card.cardNumber);
   const API_URL = `${API_BASE_URL}/allReciepts/1?cardNumber=${cardNumbersArray}`;
@@ -98,10 +113,10 @@ const Kvitton = ({ route }) => {
     try {
       const response = await fetch(API_URL);
       const json = await response.json();
-      setData( json);
+      setData(json);
       setDataFetched(true);
       setRefreshing(false);
-      setfltr(
+      setSortedData(
         filterDataByAmountAndDatetimeRange(
           json[0],
           contextProvider.filterParams.selectedAmountRange?.from,
@@ -168,7 +183,7 @@ const Kvitton = ({ route }) => {
         backgroundColor={backgroundColor}
         textColor={color}
         icon={isAddReceiptToFolder}
-        
+        contextFunctions={contextFunction}
       />
     );
   };
@@ -180,9 +195,9 @@ const Kvitton = ({ route }) => {
   };
 
   return (
-    <View style={{backgroundColor:'white'}}>
+    <View style={{ backgroundColor: "white", height: "100%" }}>
       <FlatList
-         refreshControl={
+        refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
         ListHeaderComponent={
@@ -191,7 +206,6 @@ const Kvitton = ({ route }) => {
               navigation={() => navigation.navigate("Cards")}
             />
 
-            {/* should make this a reuseable component */}
             <View
               style={{
                 height: 30,
@@ -214,14 +228,70 @@ const Kvitton = ({ route }) => {
                 isAsc={isAscAmount}
               />
             </View>
-            {/* ....................................... */}
           </View>
         }
-      data={sortedData == [] ? sortedData : data[0]}
+        data={sortedData == [] ? sortedData : data[0] }
         //data={fltr !== [] ? fltr : sortedData !== [s] ? sortedData : data[0]}
         renderItem={renderItem}
         extraData={selectedId}
       />
+
+      {/* These buttons show up when you are adding a receipt to a folder */}
+      <View>
+        {isAddReceiptToFolder ? (
+          <View
+            style={{
+              justifyContent: "space-around",
+              flexDirection: "row",
+              paddingVertical: 18,
+              borderTopWidth: 2,
+              borderTopColor: '#e6e6e6',
+              backgroundColor: '#fafafa'
+            }}
+          >
+            <RectangularButton
+              smallButton={true}
+              text="cancel"
+              function={() => console.log(receiptToFolderParams)}
+            />
+            <RectangularButton
+              smallButton={true}
+              text="add reciept"
+              function={async () => {
+                const ID_Folder = selectedFolderId.selectedFolderId.toString();
+                const Folder_name = selectedFolderId.selectedFolderName.toString();
+                const Reciept_Number = isAddReceiptToFolder.ID_Reciept
+
+
+                try {
+                  const response = await fetch(`${API_BASE_URL}/addFolder/1`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                     ID_Folder,
+                     Folder_name,
+                     Reciept_Number
+                    }),
+                  });
+      
+                  const data = await response.json();
+      
+                  if (response.ok) {
+                    console.log("Success", "New folder added successfully", data);
+                    updateIsAddReceiptToFolder(false)
+                  } else {
+                    console.log("Error", "Failed to add new folder");
+                  }
+                } catch (error) {
+                  console.error("Error adding new folder:", error);
+                }
+              }}
+            />
+          </View>
+        ) : null}
+      </View>
     </View>
   );
 };

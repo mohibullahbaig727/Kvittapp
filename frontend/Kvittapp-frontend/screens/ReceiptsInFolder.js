@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
+  RefreshControl,
   StyleSheet,
   Text,
   TextInput,
@@ -24,7 +25,7 @@ const Item = ({ item, onPress, folderId, isRemoveReciept }) => (
         flexDirection: "row",
         justifyContent: "space-between",
         borderBottomWidth: 1,
-        borderBottomColor: '#e6e6e6',
+        borderBottomColor: "#e6e6e6",
         paddingVertical: 10,
         paddingHorizontal: 16,
         alignItems: "center",
@@ -59,19 +60,27 @@ const Item = ({ item, onPress, folderId, isRemoveReciept }) => (
         <Text>{item.Total_Amount} kr</Text>
         {isRemoveReciept ? (
           <CircularButton
-            text="X"
+            child={
+              <Image
+                style={{
+                  height: 12,
+                  width: 12,
+                }}
+                source={require("../assets/icons/cancelButtonIcon.png")}
+              />
+            }
             marginLeft={6}
             function={async () => {
               try {
                 const response = await fetch(
-                  `${API_BASE_URL}/deleteFolder/1/${folderId}/${item.ID_Reciept}`,
+                  `${API_BASE_URL}/deleteReceiptInFolder/1/${folderId}/${item.ID_Reciept}`,
                   {
                     method: "DELETE",
                   }
                 );
 
                 if (response.ok) {
-                  console.log("Folder receipt deleted successfully");
+                  console.log("receipt deleted successfully");
                   // Handle success case here
                 } else {
                   console.error(
@@ -87,7 +96,18 @@ const Item = ({ item, onPress, folderId, isRemoveReciept }) => (
             }}
           />
         ) : (
-          <CircularButton text=">" marginLeft={6} />
+          <CircularButton
+            child={
+              <Image
+                style={{
+                  height: 12,
+                  width: 12,
+                }}
+                source={require("../assets/icons/arrowRightIcon.png")}
+              />
+            }
+            marginLeft={6}
+          />
         )}
       </View>
     </View>
@@ -98,24 +118,21 @@ const ReceiptsInFolderScreen = ({ route }) => {
   const [folderData, setFolderData] = useState([]);
   const [isRemoveReciept, setisRemoveReciept] = useState(false);
   const [isDataFetched, setIsDataFetched] = useState(false);
-  const [receiptAdded, setReceiptAdded] = useState();
+  const [refreshing, setRefreshing] = useState(false);
 
-  const { isAddReceiptToFolder, updateIsAddReceiptToFolder } = useContext(CardContext);
-  
+  const {
+    isAddReceiptToFolder,
+    updateIsAddReceiptToFolder,
+    updateSelectedFolderId,
+    selectedFolderId,
+  } = useContext(CardContext);
 
-  console.log(isAddReceiptToFolder)
 
   const folderDetails = route.params?.data;
 
   const navigation = useNavigation();
 
-
   const API_URL = `${API_BASE_URL}/ReceiptsInFolder/1/${folderDetails.ID_Folder}`;
- 
-
-  const folderId = folderDetails.ID_Folder;
-  const recId = '193847372';
-  const folderName = folderDetails.Folder_name;
 
   const fetchData = async () => {
     try {
@@ -123,6 +140,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
       const json = await response.json();
       setFolderData(json);
       setIsDataFetched(true);
+      setRefreshing(false)
     } catch (error) {
       console.error(error);
       setIsDataFetched(false);
@@ -138,24 +156,33 @@ const ReceiptsInFolderScreen = ({ route }) => {
       <Item
         item={item}
         isRemoveReciept={isRemoveReciept}
-        folderId={route.params?.data}
+        folderId={route.params?.data.ID_Folder}
         onPress={() => console.log(item.id)}
       />
     );
   };
 
+  const handleRefresh = () => {
+    // Set refreshing status to true and trigger fetch data function
+    setRefreshing(true);
+    fetchData();
+  };
+
   return (
-    <View style={{backgroundColor:'white', height:'100%'}}>
+    <View style={{ backgroundColor: "white", height: "100%" }}>
       {isDataFetched ? (
         <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
           ListHeaderComponent={
-            <View style={{  }}>
+            <View style={{}}>
               <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
                   paddingHorizontal: 32,
-                  marginVertical:12 
+                  marginVertical: 12,
                 }}
               >
                 <View style={{ flexDirection: "row", alignSelf: "center" }}>
@@ -179,8 +206,12 @@ const ReceiptsInFolderScreen = ({ route }) => {
                     smallButton={true}
                     text="Add Receipts"
                     function={() => {
-                      updateIsAddReceiptToFolder(true)
-                      navigation.navigate("Kvitton")
+                      updateSelectedFolderId({
+                        selectedFolderId: folderDetails.ID_Folder,
+                        selectedFolderName: folderDetails.Folder_name,
+                      });
+                      updateIsAddReceiptToFolder(true);
+                      navigation.navigate("Kvitton");
                     }}
                   />
                   <RectangularButton
@@ -192,27 +223,27 @@ const ReceiptsInFolderScreen = ({ route }) => {
               </View>
 
               <View
-              style={{
-                height: 30,
-                borderWidth: 1,
-                borderColor: "#E6E6E6",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingHorizontal: 20,
-                alignItems: "center",
-              }}
-            >
-              <SortButton
-                //onPress={sortDataByDate}
-                child={<Text style={styles.whiteText}>Date</Text>}
-                //isAsc={isAscDate}
-              />
-              <SortButton
-                //onPress={sortDataByAmount}
-                child={<Text style={styles.whiteText}>Amount</Text>}
-                //isAsc={isAscAmount}
-              />
-            </View>
+                style={{
+                  height: 30,
+                  borderWidth: 1,
+                  borderColor: "#E6E6E6",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingHorizontal: 20,
+                  alignItems: "center",
+                }}
+              >
+                <SortButton
+                  //onPress={sortDataByDate}
+                  child={<Text style={styles.whiteText}>Date</Text>}
+                  //isAsc={isAscDate}
+                />
+                <SortButton
+                  //onPress={sortDataByAmount}
+                  child={<Text style={styles.whiteText}>Amount</Text>}
+                  //isAsc={isAscAmount}
+                />
+              </View>
             </View>
           }
           data={folderData[0]}
@@ -221,7 +252,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
       ) : (
         <ActivityIndicator size="large" />
       )}
-      <View>
+      {/* <View>
         <View></View>
         <TextInput
           placeholder="Reciept number"
@@ -258,7 +289,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
         >
           <Text>Add receipt to folder</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };
