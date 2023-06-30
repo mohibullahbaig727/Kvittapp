@@ -2,6 +2,7 @@ import React, { memo, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,6 +18,7 @@ import Receipt, {
 import TransparentDialogBox from "../components/DialogBox";
 import { API_BASE_URL } from "../constants";
 import Dropdown from "../components/NewDropDown";
+import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 
 const ReturnDetails = ({ navigation, route }) => {
   const [data, setData] = useState([]);
@@ -79,6 +81,12 @@ const ReturnDetails = ({ navigation, route }) => {
     }
   };
 
+  const handleRefresh = () => {
+    // Set refreshing status to true and trigger fetch data function
+    setisLoading(true);
+    fetchData();
+  };
+
   const updateReturnStatus = async (ID_Return, Return_status) => {
     const url = `${API_BASE_URL}/updateReturnStatus/${ID_Return}`;
   
@@ -92,6 +100,11 @@ const ReturnDetails = ({ navigation, route }) => {
       });
   
       if (response.ok) {
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'Folder added successfully',
+        })
         console.log('Return status updated successfully');
         // Handle success case
       } else {
@@ -135,23 +148,20 @@ const ReturnDetails = ({ navigation, route }) => {
     setdaysDiffExchange(daysLeftExchange);
   };
 
-  const handleShowDialog = () => {
-    setisDialogVisible(true);
-  };
-
-  const handleCloseDialog = () => {
-    setisDialogVisible(false);
-  };
 
   return (
     <View style={styles.mainContainer}>
       {isLoading ? (
         <ActivityIndicator size="large" />
       ) : (
-        <View>
+          <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />
+          }>
+             <View>
           <View style={styles.storeDetailsContainer}>
             <View>
-              <Text style={[styles.boldText, {fontSize:20}]}>{routeData.Store_name}</Text>
+              <Text style={[styles.boldText, {fontSize:20}]}>{routeData?.Store_name}</Text>
               <Text style={styles.boldText}>
                 {routeData.Return_date_created.slice(0, 10)}
               </Text>
@@ -170,10 +180,10 @@ const ReturnDetails = ({ navigation, route }) => {
           <View>
             <View style={styles.openBuyDetailsContainer}>
               <Text style={styles.regularText}>
-                Status: {routeData.Return_status}
+                Status: {routeData?.Return_status}
                 </Text>
                 <Text style={styles.regularText}>
-                Return ID: {routeData.ID_Return}
+                Return ID: {routeData?.ID_Return}
               </Text>
             </View>
 
@@ -291,6 +301,8 @@ const ReturnDetails = ({ navigation, route }) => {
             </View>
           </View>
         </View>
+          </ScrollView>
+       
       )}
     </View>
   );
@@ -299,7 +311,8 @@ const ReturnDetails = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   mainContainer: {
     paddingHorizontal: 28,
-    backgroundColor:'white'
+    backgroundColor: 'white',
+    height:'100%'
   },
   storeDetailsContainer: {
     flexDirection: "row",

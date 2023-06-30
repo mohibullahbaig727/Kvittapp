@@ -16,6 +16,7 @@ import CardContext from "../CardContext";
 import { useNavigation } from "@react-navigation/native";
 import SquareRadioButton from "../components/SquareRadioButton";
 import RectangularButton from "../components/RectangularButton";
+import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 
 const Item = ({ item, onPress, icon, contextFunctions }) => (
   <TouchableOpacity onPress={onPress}>
@@ -280,9 +281,23 @@ const Kvitton = ({ route }) => {
       
                   if (response.ok) {
                     console.log("Success", "New folder added successfully", data);
+                    
                     updateIsAddReceiptToFolder(false)
+
+                    Toast.show({
+                      type: ALERT_TYPE.SUCCESS,
+                      title: 'Success',
+                      textBody: 'Reciept added to folder successfully',
+                    })
                   } else {
+                    Toast.show({
+                      type: ALERT_TYPE.DANGER,
+                      title: 'Failed',
+                      textBody: 'Something went wrong',
+                    })
+
                     console.log("Error", "Failed to add new folder");
+
                   }
                 } catch (error) {
                   console.error("Error adding new folder:", error);

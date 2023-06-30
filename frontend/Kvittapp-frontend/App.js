@@ -13,6 +13,7 @@ import * as Font from "expo-font";
 import SelectedCardsProvider from "./SelectedCardProvider";
 import { HomeStack } from "./routes/homeStack";
 import CreateAccountScreen from "./screens/CreateAccountScreen";
+import { AlertNotificationRoot } from "react-native-alert-notification";
 
 const Tab = createBottomTabNavigator();
 
@@ -49,7 +50,8 @@ export default function App() {
   }
 
   return (
-    <View style={{ height: "100%",}}>
+    <AlertNotificationRoot>
+      <View style={{ height: "100%",}}>
       {isAuthenticated ? (
         <SelectedCardsProvider>
           <NavigationContainer>
@@ -59,7 +61,7 @@ export default function App() {
                 tabBarLabelStyle: styles.bottomNavigatorText,
                 tabBarStyle: {
                   paddingTop: 8,
-                  height: Dimensions.get("window").height * 0.09,
+                  height: Dimensions.get("window").height * 0.12,
                 },
                 tabBarActiveTintColor: "#81A7FF",
                 tabBarInactiveTintColor: "black",
@@ -183,6 +185,8 @@ export default function App() {
           //<CreateAccountScreen/>
       )}
     </View>
+    </AlertNotificationRoot>
+    
   );
   //<Navigator />;
 }

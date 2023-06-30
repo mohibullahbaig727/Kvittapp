@@ -174,7 +174,7 @@ const OpenBuys = ({ navigation }) => {
   };
 
   return (
-    <View style={{backgroundColor:'white'}}>
+    <View style={{backgroundColor:'white', height:'100%'}}>
       <FlatList
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />

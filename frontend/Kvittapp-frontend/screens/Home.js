@@ -51,18 +51,49 @@ const TabScreen = () => {
         navigation.navigate("Cards");
       },
     },
-    {
-      label: "Create a return",
-      image: require("../assets/icons/returnsIcon.png"),
-      value: "createReturn",
-      function: () => navigation.navigate("OpenBuysDetails"),
-    },
+    // {
+    //   label: "Create a return",
+    //   image: require("../assets/icons/returnsIcon.png"),
+    //   value: "createReturn",
+    //   function: () => navigation.navigate("OpenBuysDetails"),
+    // },
     {
       label: "Account",
       image: require("../assets/icons/profile_icon.png"),
       value: "account",
       function: () => navigation.navigate("OpenBuysDetails"),
     },
+  ];
+
+  const optionsCampaign = [
+    {
+      label: "Account",
+      image: require("../assets/icons/profile_icon.png"),
+      value: "account",
+      function: () => navigation.navigate("OpenBuysDetails"),
+    },
+  ];
+
+  const optionsGeneral = [
+    {
+      label: "Home",
+      value: "home",
+      image: require("../assets/icons/home_icon.png"),
+      function: () => console.log("Do Nothing"),
+    },
+    {
+      label: "Folders",
+      value: "folders",
+      image: require("../assets/icons/folderIcon.png"),
+      function: () => navigation.navigate("Folders"),
+    },
+    {
+      label: "Scan Receipt",
+      value: "scanReceipt",
+      image: require("../assets/icons/scan_receipt_icon.png"),
+      function: () => console.log("scan kvitto"),
+    },
+ 
   ];
 
   const toggleSidebar = () => {
@@ -110,7 +141,10 @@ const TabScreen = () => {
           style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0 }}
         >
           <Sidebar isOpen={isSideBarOpen} onClose={toggleSidebar}>
-            {options.map((options) => {
+            <View style = {{justifyContent: 'space-around', height:'100%'}}>
+              <View>
+                <Text style={styles.sidebarHeadings} >Kvitton</Text>
+              {options.map((options) => {
               return (
                 <TouchableOpacity onPress={options.function}>
                   <View style={{ flexDirection: "row", paddingBottom: 18 }}>
@@ -129,6 +163,56 @@ const TabScreen = () => {
                 </TouchableOpacity>
               );
             })}
+              </View>
+
+              <View>
+                <Text  style={styles.sidebarHeadings} >Campaign</Text>
+              {optionsCampaign.map((options) => {
+              return (
+                <TouchableOpacity onPress={options.function}>
+                  <View style={{ flexDirection: "row", paddingBottom: 18 }}>
+                    <Image
+                      resizeMode="contain"
+                      source={options.image}
+                      style={{
+                        height: 18,
+                        width: 18,
+                        alignSelf: "center",
+                        tintColor: "#81A7FF",
+                      }}
+                    />
+                    <Text style={styles.label}>{options.label}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+              </View>
+
+              <View>
+                <Text  style={styles.sidebarHeadings} >General</Text>
+              {optionsGeneral.map((options) => {
+              return (
+                <TouchableOpacity onPress={options.function}>
+                  <View style={{ flexDirection: "row", paddingBottom: 18 }}>
+                    <Image
+                      resizeMode="contain"
+                      source={options.image}
+                      style={{
+                        height: 18,
+                        width: 18,
+                        alignSelf: "center",
+                        tintColor: "#81A7FF",
+                      }}
+                    />
+                    <Text style={styles.label}>{options.label}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+              </View>
+              
+            </View>
+            
           </Sidebar>
         </View>
       )}
@@ -162,7 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderLeftWidth: 3,
     borderTopWidth: 1,
-    borderLeftColor: "#e6e6e6",
+    borderLeftColor: "#e9e9e9",
     padding: 20,
     zIndex: 2,
   },
@@ -180,6 +264,11 @@ const styles = StyleSheet.create({
     fontFamily: "BalooChettan2-Bold",
     marginLeft: 8,
   },
+  sidebarHeadings: {
+    fontSize: 20,
+    fontFamily: "BalooChettan2-Bold",
+   marginBottom: 4
+  }
 });
 
 export default TabScreen;

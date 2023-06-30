@@ -1,3 +1,4 @@
+import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import { API_BASE_URL } from "../constants";
 
 export const addCard = async (ID_User, cardDetails) => {
@@ -29,6 +30,7 @@ export const addCard = async (ID_User, cardDetails) => {
 
 export const addReturn = async (
   ID_User,
+  ID_Reciept,
   Store_name,
   Return_status,
   Return_quantity,
@@ -41,6 +43,7 @@ export const addReturn = async (
 ) => {
   const API_URL = `${API_BASE_URL}/userReturns/${ID_User}/addReturn`;
   const body = {
+    ID_Reciept,
     Store_name,
     Return_status,
     Return_quantity,
@@ -60,8 +63,18 @@ export const addReturn = async (
   })
     .then((response) => {
       if (!response.ok) {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: 'Failder',
+          textBody: 'Something went wrong',
+        })
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+      Toast.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: 'Success',
+        textBody: 'Return created successfully',
+      })
       return response.json();
     })
     .then((data) => {

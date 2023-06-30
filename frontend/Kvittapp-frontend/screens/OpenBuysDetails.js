@@ -1,12 +1,6 @@
 import { Camera } from "expo-camera";
 import React, { useEffect, useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { CameraModule } from "../components/CameraModule";
 import RectangularButton from "../components/RectangularButton";
 import { addReturn } from "../services/add";
@@ -21,6 +15,12 @@ const OpenBuysDetails = ({ navigation, route }) => {
 
   const data = route?.params?.data;
 
+  //function to get the total amount of a product selected for return
+  const sumUnitPrice = data.reduce((sum, item) => sum + item.Unit_price_excl_VAT + item.VAT_Amount, 0);
+
+console.log(data)
+
+console.log(sumUnitPrice, 'moo')
 
   useEffect(() => {
     (async () => {
@@ -119,8 +119,7 @@ const OpenBuysDetails = ({ navigation, route }) => {
     <View
       style={{
         backgroundColor: "white",
-        height: '100%'
-        
+        height: "100%",
       }}
     >
       <ScrollView>
@@ -139,7 +138,7 @@ const OpenBuysDetails = ({ navigation, route }) => {
         <View style={{ paddingHorizontal: 32, marginTop: 16 }}>
           <View>
             {data.map((data) => (
-              <View style={{paddingBottom:12}}>
+              <View style={{ paddingBottom: 12 }}>
                 <Text style={styles.regularText}>{data.Product_name}</Text>
                 {/* <FlatList
                 data={returnResons}
@@ -164,29 +163,30 @@ const OpenBuysDetails = ({ navigation, route }) => {
                     dropdownItems={dropdownItems}
                   />
                 </View>
-
-                
               </View>
             ))}
-            <View style={{paddingVertical: 12}}>
-                  <Text style={styles.regularText}>Kommentar (Valfritt):</Text>
-                  <View
-                    style={{
-                      height: 100,
-                      width: "100%",
-                      borderRadius: 8,
-                      borderWidth: 1,
-                      backgroundColor: "white",
-                      alignSelf: "center",
-                      marginTop:6
-                    }}
-                  >
-                    <TextInput
-                      placeholder="(Optional) Describe the reason for return..."
-                      onChangeText={(value) => setOptionalReason(value)}
-                    />
-                  </View>
-                </View>
+            <View style={{ paddingVertical: 12 }}>
+              <Text style={styles.regularText}>Kommentar (Valfritt):</Text>
+              <View
+                style={{
+                  height: 100,
+                  width: "100%",
+                  borderRadius: 8,
+                  borderWidth: 1,
+                  backgroundColor: "white",
+                  alignSelf: "center",
+                  marginTop: 6,
+                  paddingHorizontal: 12,
+                  paddingVertical: 8
+                }}
+              >
+                <TextInput
+                  style={{ fontSize: 14, fontFamily: "BalooChettan2-Regular" }}
+                  placeholder="(Optional) Describe the reason for return..."
+                  onChangeText={(value) => setOptionalReason(value)}
+                />
+              </View>
+            </View>
 
             {/* <TextContainer title="Pictures (Optional)" />
 
@@ -240,12 +240,13 @@ const OpenBuysDetails = ({ navigation, route }) => {
                 function={async () => {
                   await addReturn(
                     1,
+                    data[0].ID_Reciept,
                     data[0].Store_Name,
                     "Pending",
                     1,
                     data[0].Product,
                     data[0].Product_name,
-                    222,
+                    sumUnitPrice,
                     reasonSelected,
                     optionalReason,
                     "Store"

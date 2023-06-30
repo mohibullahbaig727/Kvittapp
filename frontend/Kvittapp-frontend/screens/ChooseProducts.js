@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import RectangularButtonBlack from "../components/RectangularButtonBlack";
 import { ScrollView } from "react-native";
@@ -9,9 +9,14 @@ const ChooseProducts = ({ navigation, route }) => {
   // const navigation = useNavigation();
 
   const returnItems = route?.params?.data;
+ 
 
+  const [selectedReturnItems, setSelectedReturnItems] = useState([])
+
+
+  console.log(selectedReturnItems, 'moooo')
   return (
-    <View style={{ height:'100%', justifyContent:'space-between', paddingVertical:16 }} >
+    <View style={{ height:'100%', justifyContent:'space-between', paddingVertical:16, backgroundColor:'white' }} >
       <View style={{ paddingHorizontal: 32, }}>
       <View
         style={{
@@ -34,7 +39,7 @@ const ChooseProducts = ({ navigation, route }) => {
       >
       </View>
       {/* <View style={{ borderTopWidth: 1, width: "100%" }} /> */}
-      <ScrollView alwaysBounceVertical="true">
+      
         {returnItems?.map((returnItem) => {
           return (
             <View>
@@ -51,14 +56,16 @@ const ChooseProducts = ({ navigation, route }) => {
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: 'space-between', width: 90,  }}>
                   <Text style={styles.regularText}>{returnItem?.Unit_price_excl_VAT}</Text>
-                  <SquareRadioButton label=" " />
+                  <SquareRadioButton label=" "
+                    onPress={() => setSelectedReturnItems([...selectedReturnItems, returnItem])}
+                  />
                 </View>
               </View>
               <View style={{ borderTopWidth: 1, width: "100%", borderTopColor:'#e6e6e6' }} />
             </View>
           );
         })}
-      </ScrollView>
+      
       <View
         style={{
           marginVertical: 12,
@@ -81,10 +88,11 @@ const ChooseProducts = ({ navigation, route }) => {
         justifyContent: 'space-around',
       alignItems: 'center',}}>
         <RectangularButton
-        smallButton={true}
+          smallButton={true}
+          inactiveButton ={selectedReturnItems ==null ? true : false}
         text="Next"
         function={() =>
-          navigation.navigate("OpenBuysDetails", { data: returnItems })
+          navigation.navigate("OpenBuysDetails", { data: selectedReturnItems })
         }
         />
          <RectangularButton

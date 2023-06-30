@@ -179,6 +179,7 @@ router.put("/userDetails/:ID_User/addCard", async (request, response) => {
 router.post("/userReturns/:ID_User/addReturn", async (req, res) => {
   const ID_User = req.params.ID_User;
   const {
+    ID_Reciept,
     Store_name,
     Return_status,
     Return_quantity,
@@ -193,6 +194,7 @@ router.post("/userReturns/:ID_User/addReturn", async (req, res) => {
   try {
     await dbOperations.addReturn(
       ID_User,
+      ID_Reciept,
       Store_name,
       Return_status,
       Return_quantity,

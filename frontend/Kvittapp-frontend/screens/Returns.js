@@ -228,7 +228,8 @@ export default Returns;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:'white'
+    backgroundColor: 'white',
+    height:'100%'
   },
   itemContainer: {
     flexDirection: "row",

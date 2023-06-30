@@ -271,6 +271,7 @@ async function addCard(ID_User, cardNumber, expirationDate, bank, PO) {
 //add a return to the db
 async function addReturn(
   ID_User,
+  ID_Reciept,
   Store_name,
   Return_status,
   Return_quantity,
@@ -295,9 +296,9 @@ async function addReturn(
     // Insert the new row into the database
     await sql.query`
       INSERT INTO dim.Returns
-        ( ID_Return, ID_Reciept, ID_User, Store_name, Return_status, Return_date_created, Return_quantity, Product, Product_name, Return_Amount, Return_reason, Return_comment, Return_option)
+        ( ID_Return,  ID_User, ID_Reciept, Store_name, Return_status, Return_date_created, Return_quantity, Product, Product_name, Return_Amount, Return_reason, Return_comment, Return_option)
       VALUES
-        ( null, null, ${ID_User}, ${Store_name}, ${Return_status}, ${currentDate}, ${Return_quantity}, ${Product}, ${Product_name}, ${Return_Amount}, ${Return_reason}, ${Return_comment}, ${Return_option})
+        ( null, ${ID_User}, ${ID_Reciept}, ${Store_name}, ${Return_status}, ${currentDate}, ${Return_quantity}, ${Product}, ${Product_name}, ${Return_Amount}, ${Return_reason}, ${Return_comment}, ${Return_option})
     `;
 
     // Close the database connection

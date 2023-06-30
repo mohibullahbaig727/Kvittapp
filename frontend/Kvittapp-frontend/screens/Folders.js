@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View, StyleSheet, RefreshControl } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View, StyleSheet, RefreshControl, Alert } from "react-native";
 import RectangularButton from "../components/RectangularButton";
 import CreateFolderDialog from "../components/CreateFolderDialog";
 import { API_BASE_URL } from "../constants";
 import CardContext from "../CardContext";
+import { ALERT_TYPE, AlertManager, AlertNotification, Toast } from 'react-native-alert-notification';
+
 
 const FoldersScreen = ({ navigation }) => {
   const [isDeleteSelected, setIsDeleteSelected] = useState(false);
@@ -63,7 +65,12 @@ const FoldersScreen = ({ navigation }) => {
             const data = await response.json();
 
             if (response.ok) {
-              console.log("Success", "New receipt successfully", data);
+              Toast.show({
+                type: ALERT_TYPE.SUCCESS,
+                title: 'Success',
+                textBody: 'Folder added successfully',
+              })
+              handleRefresh()
             } else {
               console.log("Error", "Failed to add new receipt");
             }
@@ -129,8 +136,12 @@ const FoldersScreen = ({ navigation }) => {
                           );
 
                           if (response.ok) {
-                            console.log("Folder deleted successfully");
-                            // Handle success case here
+                            Toast.show({
+                              type: ALERT_TYPE.SUCCESS,
+                              title: 'Success',
+                              textBody: 'Folder deleted successfully',
+                            })
+                            handleRefresh()
                           } else {
                             console.error(
                               "Error deleting folder:",
@@ -139,6 +150,11 @@ const FoldersScreen = ({ navigation }) => {
                             // Handle error case here
                           }
                         } catch (error) {
+                          Toast.show({
+                            type: ALERT_TYPE.DANGER,
+                            title: 'Failed',
+                            textBody: 'Something went wrong',
+                          })
                           console.error("Error deleting folder:", error);
                           // Handle error case here
                         }
@@ -172,7 +188,8 @@ const FoldersScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:'white'
+    backgroundColor: 'white', 
+    height:'100%'
   },
   buttonContainer: {
     flexDirection: "row",
