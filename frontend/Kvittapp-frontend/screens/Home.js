@@ -20,12 +20,6 @@ const TabScreen = () => {
 
   const options = [
     {
-      label: "Home",
-      value: "home",
-      image: require("../assets/icons/home_icon.png"),
-      function: () => console.log("Do Nothing"),
-    },
-    {
       label: "Filters",
       value: "filters",
       image: require("../assets/icons/filter_icon.png"),
@@ -43,6 +37,7 @@ const TabScreen = () => {
       image: require("../assets/icons/scan_receipt_icon.png"),
       function: () => console.log("scan kvitto"),
     },
+     
     {
       label: "Cards",
       value: "cards",
@@ -52,46 +47,48 @@ const TabScreen = () => {
       },
     },
     // {
+    //   label: "Home",
+    //   value: "home",
+    //   image: require("../assets/icons/home_icon.png"),
+    //   function: () => console.log("Do Nothing"),
+    // },
+  
+    // {
     //   label: "Create a return",
     //   image: require("../assets/icons/returnsIcon.png"),
     //   value: "createReturn",
     //   function: () => navigation.navigate("OpenBuysDetails"),
     // },
-    {
-      label: "Account",
-      image: require("../assets/icons/profile_icon.png"),
-      value: "account",
-      function: () => navigation.navigate("OpenBuysDetails"),
-    },
+  
   ];
 
   const optionsCampaign = [
     {
-      label: "Account",
-      image: require("../assets/icons/profile_icon.png"),
-      value: "account",
-      function: () => navigation.navigate("OpenBuysDetails"),
+      label: "Categories",
+      image: require("../assets/icons/campaignIcon.png"),
+      value: "Categories",
+      function: () => console.log('Categories'),
     },
   ];
 
   const optionsGeneral = [
     {
-      label: "Home",
-      value: "home",
-      image: require("../assets/icons/home_icon.png"),
-      function: () => console.log("Do Nothing"),
+      label: "Account",
+      image: require("../assets/icons/profile_icon.png"),
+      value: "account",
+      function: () => console.log('account selected'),
     },
     {
-      label: "Folders",
-      value: "folders",
-      image: require("../assets/icons/folderIcon.png"),
-      function: () => navigation.navigate("Folders"),
+      label: "Settings",
+      value: "settings",
+      image: require("../assets/icons/settingsIcon.png"),
+      function: () => navigation.navigate("Settings"),
     },
     {
-      label: "Scan Receipt",
-      value: "scanReceipt",
-      image: require("../assets/icons/scan_receipt_icon.png"),
-      function: () => console.log("scan kvitto"),
+      label: "Log out",
+      value: "log out ",
+      image: require("../assets/icons/logoutIcon.png"),
+      function: () => console.log("Log out "),
     },
  
   ];
