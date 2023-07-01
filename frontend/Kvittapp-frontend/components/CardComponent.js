@@ -54,8 +54,8 @@ const CardComponent = (props) => {
                 <Text style={styles.cardText}>{cardData?.cardNumber}</Text>
               </View>
               <View style={{ marginTop: 12 }}>
-                <Text style={styles.headingText}>Expirt Date</Text>
-                <Text style={styles.cardText}>{cardData?.expirationDate}</Text>
+                <Text style={styles.headingText}>Expiry Date</Text>
+                <Text style={styles.cardText}>{cardData?.expirationDates}</Text>
               </View>
             </View>
           </View>

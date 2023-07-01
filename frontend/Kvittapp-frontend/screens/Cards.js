@@ -119,30 +119,6 @@ const Cards = ({ route, navigation }) => {
             {cardData.map((data) => {
               return (
                 <View key={data.id}>
-                  {/* <CardComponent
-                    cardData={data}
-                    child={
-                      <View>
-                        <TransparentDialogBox
-                          visible={isDialogVisible}
-                          onClose={handleCloseDialog}
-                          title="Remove Card!"
-                          message="Are you sure you want to remove this card?"
-                          onYes={() => {
-                            handleCloseDialog();
-                            RemoveCard(1, data.id);
-                            console.log(data.id);
-                          }}
-                        />
-                        {removeCards ? (
-                          <CircularButton
-                            text="X"
-                            function={handleShowDialog}
-                          />
-                        ) : null}
-                      </View>
-                    }
-                  /> */}
                   <CardComponent
                     showRadioBtn={!removeCards}
                     cardData={data}
