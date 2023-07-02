@@ -2,11 +2,12 @@ import {
   Dimensions,
   Image,
   StyleSheet,
+  TouchableOpacity,
   View,
 } from "react-native";
 import Login from "./screens/Login";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, StackActions } from "@react-navigation/native";
 import AppHeader from "./components/AppHeader";
 import { useEffect, useState } from "react";
 import * as Font from "expo-font";
@@ -52,77 +53,107 @@ export default function App() {
 
   return (
     <AlertNotificationRoot>
-      <View style={{ height: "100%",}}>
-      {isAuthenticated ? (
-        <SelectedCardsProvider>
-          <NavigationContainer>
-            <Tab.Navigator
-              initialRouteName="Kvitton"
-              screenOptions={{
-                tabBarLabelStyle: styles.bottomNavigatorText,
-                tabBarStyle: {
-                  paddingTop: 8,
-                  height: Dimensions.get("window").height * 0.12,
-                },
-                tabBarActiveTintColor: "#81A7FF",
-                tabBarInactiveTintColor: "black",
-              }}
-            >
-              <Tab.Screen
-                name="Home"
-                component={HomeStack}
-                options={({ navigation }) => ({
-                  tabBarIcon: () => (
-                    <Image
-                      style={{ tintColor: "#81A7FF",  }}
-                      source={require("./assets/icons/openbuysIcon.png")}
-                    />
-                  ),
-                  tabBarItemStyle: {
-                    marginBottom: 8,
+      <View style={{ height: "100%" }}>
+        {isAuthenticated ? (
+          <SelectedCardsProvider>
+            <NavigationContainer>
+              <Tab.Navigator
+                initialRouteName="Kvitton"
+                screenOptions={{
+                  tabBarLabelStyle: styles.bottomNavigatorText,
+                  tabBarStyle: {
+                    paddingTop: 8,
+                    height: Dimensions.get("window").height * 0.12,
                   },
-                  headerTitle: () => <AppHeader />,
-                  headerStyle: { backgroundColor: "white" },
-                  // headerRight: () => (
-                  //   <TouchableOpacity
-                  //     onPress={() => navigation.navigate("Settings")}
-                  //   >
-                  //     <Image
-                  //       style={{ marginRight: 8 }}
-                  //       source={require("./assets/icons/settingsIcon.png")}
-                  //     />
-                  //   </TouchableOpacity>
-                  // ),
-                })}
+                  tabBarActiveTintColor: "#81A7FF",
+                  tabBarInactiveTintColor: "black",
+                }}
+              >
+                <Tab.Screen
+                  name="Home"
+                  component={HomeStack}
+                  options={({ navigation }) => {
+                    const showBackButton = navigation.canGoBack();
+                    return {tabBarIcon: () => (
+                      <Image
+                        style={{ tintColor: "#81A7FF" }}
+                        source={require("./assets/icons/openbuysIcon.png")}
+                      />
+                    ),
+                    tabBarItemStyle: {
+                      marginBottom: 8,
+                    },
+                    headerTitle: () => (
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          width: "100%",
+                          paddingHorizontal: 12,
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.dispatch(StackActions.pop(1))
+                          } // Handles the back button action
+                        >
+                          <Image
+                            style={{ tintColor: "#81A7FF" }}
+                            source={require("./assets/icons/backIcon.png")}
+                          />
+                        </TouchableOpacity>
+                        <Image
+                          style={{ tintColor: "#81A7FF" }}
+                          source={require("./assets/KvittappLogo.png")}
+                        />
+                        {/*extra view added to center the logo  */}
+                        <View />
+                      </View>
+                    ),
+                    headerStyle: { backgroundColor: "white" },}
+                    
+                    // headerRight: () => (
+                    //   <TouchableOpacity
+                    //     onPress={() => navigation.navigate("Settings")}
+                    //   >
+                    //     <Image
+                    //       style={{ marginRight: 8 }}
+                    //       source={require("./assets/icons/settingsIcon.png")}
+                    //     />
+                    //   </TouchableOpacity>
+                    // ),
+                  }}
                 />
                 <Tab.Screen
-                name="Campaigns"
-                component={CampaignStack}
-                options={({ navigation }) => ({
-                  tabBarIcon: () => (
-                    <Image
-                      style={{ tintColor: "#81A7FF", height:40, width:40 }}
-                      source={require("./assets/icons/campaignIcon2.png")}
-                    />
-                  ),
-                  tabBarItemStyle: {
-                    marginBottom: 8,
-                  },
-                  headerTitle: () => <AppHeader />,
-                  headerStyle: { backgroundColor: "white" },
-                  // headerRight: () => (
-                  //   <TouchableOpacity
-                  //     onPress={() => navigation.navigate("Settings")}
-                  //   >
-                  //     <Image
-                  //       style={{ marginRight: 8 }}
-                  //       source={require("./assets/icons/settingsIcon.png")}
-                  //     />
-                  //   </TouchableOpacity>
-                  // ),
-                })}
-              />
-              {/* <Tab.Screen
+                  name="Campaigns"
+                  component={CampaignStack}
+                  options={({ navigation }) => ({
+                    tabBarIcon: () => (
+                      <Image
+                        style={{ tintColor: "#81A7FF", height: 40, width: 40 }}
+                        source={require("./assets/icons/campaignIcon2.png")}
+                      />
+                    ),
+                    tabBarItemStyle: {
+                      marginBottom: 8,
+                    },
+                    headerTitle: () => <AppHeader />,
+                    headerStyle: { backgroundColor: "white" },
+                    // headerRight: () => (
+                    //   <TouchableOpacity
+                    //     onPress={() => navigation.navigate("Settings")}
+                    //   >
+                    //     <Image
+                    //       style={{ marginRight: 8 }}
+                    //       source={require("./assets/icons/settingsIcon.png")}
+                    //     />
+                    //   </TouchableOpacity>
+                    // ),
+                  })}
+                />
+                {/* <Tab.Screen
                 name="Receipts"
                 component={KvittonStack}
                 options={({ navigation }) => ({
@@ -151,7 +182,7 @@ export default function App() {
                   ),
                 })}
               /> */}
-              {/* <Tab.Screen
+                {/* <Tab.Screen
                 name="Returns"
                 component={ReturnStack}
                 options={({ navigation }) => ({
@@ -205,16 +236,15 @@ export default function App() {
                   ),
                 })}
               /> */}
-            </Tab.Navigator>
-          </NavigationContainer>
-        </SelectedCardsProvider>
-      ) : (
-      <Login onLogin={handleLogin} />
+              </Tab.Navigator>
+            </NavigationContainer>
+          </SelectedCardsProvider>
+        ) : (
+          <Login onLogin={handleLogin} />
           //<CreateAccountScreen/>
-      )}
-    </View>
+        )}
+      </View>
     </AlertNotificationRoot>
-    
   );
   //<Navigator />;
 }

@@ -53,7 +53,7 @@ const AddBankCard = ({ navigation }) => {
           <InputField
             value={cExp}
             onTextChange={(value) => setcExp(value)}
-            keyboardType="default"
+            keyboardType="numbers-and-punctuation"
           />
         </View>
       </View>

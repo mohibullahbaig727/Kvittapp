@@ -6,6 +6,7 @@ import {
   View,
   StyleSheet,
   RefreshControl,
+  TouchableOpacity,
 } from "react-native";
 import CardComponent from "../components/CardComponent";
 import RoundedRectangularButton from "../components/RoundedRectangularButton";
@@ -24,9 +25,9 @@ const Cards = ({ route, navigation }) => {
   const [removeCards, setRemoveCards] = useState(false);
   const [data, setData] = useState();
   const [cardData, setcardData] = useState();
-  const [isDialogVisible, setisDialogVisible] = useState(false);
+//  const [isDialogVisible, setisDialogVisible] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-
+  const [dialogId, setDialogId] = useState(null);
   const [radioSelected, setRadioSelected] = selected.useState();
 
   const handleRadioPress = (value) => {
@@ -34,17 +35,11 @@ const Cards = ({ route, navigation }) => {
   };
 
   const handleShowDialog = (id) => {
-    setisDialogVisible((prevState) => ({
-      ...prevState,
-      [id]: true,
-    }));
+    setDialogId(id);
   };
 
-  const handleCloseDialog = (id) => {
-    setisDialogVisible((prevState) => ({
-      ...prevState,
-      [id]: false,
-    }));
+  const handleCloseDialog = () => {
+    setDialogId(null);
   };
 
   useEffect(() => {
@@ -88,28 +83,28 @@ const Cards = ({ route, navigation }) => {
   };
 
   return (
-    <View>
+    <View style={{ backgroundColor: 'white' }}>
       {cardData?.length > 0 ? (
         <ScrollView
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }
         >
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
+              flexDirection: 'row',
+              justifyContent: 'space-around',
               padding: 16,
             }}
           >
             <RectangularButton
               text="Add Card"
               smallButton={true}
-              function={() => navigation.navigate("AddCards")}
+              function={() => navigation.navigate('AddCards')}
             />
             <RectangularButton
-              text={removeCards ? "Cancel" : "Remove Cards"}
+              text={removeCards ? 'Cancel' : 'Remove Cards'}
               smallButton={true}
               function={() => setRemoveCards(!removeCards)}
             />
@@ -117,6 +112,7 @@ const Cards = ({ route, navigation }) => {
 
           <View>
             {cardData.map((data) => {
+               const isDialogVisible = dialogId === data.id;
               return (
                 <View key={data.id}>
                   <CardComponent
@@ -128,18 +124,28 @@ const Cards = ({ route, navigation }) => {
                       <View>
                         {removeCards ? (
                           <CircularButton
-                            text="X"
-                            function={() => handleShowDialog(data.id)}
+                            child={
+                              <TouchableOpacity
+                                style={styles.cancelButtonIcon}
+                                onPress={() => handleShowDialog(data.id)}
+                              >
+                                <Image
+                                  style={{}}
+                                  resizeMode="contain"
+                                  source={require("../assets/icons/cancelButtonIcon.png")}
+                                />
+                              </TouchableOpacity>
+                            }
                           />
                         ) : null}
                         <TransparentDialogBox
-                          visible={isDialogVisible[data.id]}
-                          onClose={() => handleCloseDialog(data.id)}
+                          visible={isDialogVisible}
+                          onClose={handleCloseDialog}
                           title="Remove Card!"
                           message="Are you sure you want to remove this card?"
                           onYes={() => {
-                            handleCloseDialog(data.id);
-                            RemoveCard(1, parseInt(data.id));
+                            handleCloseDialog();
+                            RemoveCard(1, parseInt(data.id), handleRefresh);
                           }}
                         />
                       </View>
@@ -152,7 +158,7 @@ const Cards = ({ route, navigation }) => {
         </ScrollView>
       ) : (
         <ScrollView
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }
@@ -170,7 +176,7 @@ const Cards = ({ route, navigation }) => {
             />
             <RoundedRectangularButton
               title="Koppla ett bankkort"
-              function={() => navigation.navigate("AddCards")}
+              function={() => navigation.navigate('AddCards')}
             />
           </View>
         </ScrollView>
@@ -178,6 +184,7 @@ const Cards = ({ route, navigation }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   centeredView: {
