@@ -211,7 +211,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
                         selectedFolderName: folderDetails.Folder_name,
                       });
                       updateIsAddReceiptToFolder(true);
-                      navigation.navigate("Kvitton");
+                      navigation.navigate("Home");
                     }}
                   />
                   <RectangularButton

@@ -4,11 +4,11 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 import Sidebar from "../components/SideBarMenu";
 import { useNavigation } from "@react-navigation/native";
-import { KvittonStack } from "../routes/KvittonStack";
-import { OpenBuyStack } from "../routes/OpenBuysStack";
-import { ReturnStack } from "../routes/ReturnStack";
 import SearchBar from "../components/SearchBar";
 import BottomModalSheetFilter from "../components/BottomModalSheetFilter";
+import Kvitton from "./Kvitton";
+import OpenBuys from "./OpenBuys";
+import Returns from "./Returns";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -129,9 +129,9 @@ const TabScreen = () => {
           labelStyle: { fontSize: 16, fontFamily: "BalooChettan2-Bold" }, // Styling for the tab labels
         }}
       >
-        <Tab.Screen name="Receipts" component={KvittonStack} />
-        <Tab.Screen name="Open Buys" component={OpenBuyStack} />
-        <Tab.Screen name="Returns" component={ReturnStack} />
+        <Tab.Screen name="Receipts" component={Kvitton} />
+        <Tab.Screen name="Open Buys" component={OpenBuys} />
+        <Tab.Screen name="Returns" component={Returns} />
       </Tab.Navigator>
       {isSideBarOpen && (
         <View

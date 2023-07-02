@@ -14,6 +14,7 @@ import SelectedCardsProvider from "./SelectedCardProvider";
 import { HomeStack } from "./routes/homeStack";
 import CreateAccountScreen from "./screens/CreateAccountScreen";
 import { AlertNotificationRoot } from "react-native-alert-notification";
+import { CampaignStack } from "./routes/campaignStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -73,8 +74,35 @@ export default function App() {
                 options={({ navigation }) => ({
                   tabBarIcon: () => (
                     <Image
-                      style={{ tintColor: "#81A7FF" }}
+                      style={{ tintColor: "#81A7FF",  }}
                       source={require("./assets/icons/openbuysIcon.png")}
+                    />
+                  ),
+                  tabBarItemStyle: {
+                    marginBottom: 8,
+                  },
+                  headerTitle: () => <AppHeader />,
+                  headerStyle: { backgroundColor: "white" },
+                  // headerRight: () => (
+                  //   <TouchableOpacity
+                  //     onPress={() => navigation.navigate("Settings")}
+                  //   >
+                  //     <Image
+                  //       style={{ marginRight: 8 }}
+                  //       source={require("./assets/icons/settingsIcon.png")}
+                  //     />
+                  //   </TouchableOpacity>
+                  // ),
+                })}
+                />
+                <Tab.Screen
+                name="Campaigns"
+                component={CampaignStack}
+                options={({ navigation }) => ({
+                  tabBarIcon: () => (
+                    <Image
+                      style={{ tintColor: "#81A7FF", height:40, width:40 }}
+                      source={require("./assets/icons/campaignIcon2.png")}
                     />
                   ),
                   tabBarItemStyle: {
