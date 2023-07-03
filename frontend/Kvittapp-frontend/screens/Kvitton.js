@@ -13,7 +13,7 @@ import KvittoFlatListHeader from "../components/KvittoFlatListHeader";
 import SortButton from "../components/SortButton";
 import { API_BASE_URL } from "../constants";
 import CardContext from "../CardContext";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import SquareRadioButton from "../components/SquareRadioButton";
 import RectangularButton from "../components/RectangularButton";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
@@ -196,6 +196,13 @@ const Kvitton = ({ route }) => {
     );
   };
 
+  useFocusEffect(
+    React.useCallback(() => {
+      handleRefresh()
+    }, [])
+  );
+
+  console.log(data)
  
   return (
     <View style={{ backgroundColor: "white", height: "100%" }}>
