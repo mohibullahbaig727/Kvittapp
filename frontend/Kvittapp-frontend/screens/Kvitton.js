@@ -77,7 +77,7 @@ const Kvitton = ({ route }) => {
 
   const [data, setData] = useState([]);
 
-  const [sortedData, setSortedData] = useState(null);
+  const [sortedData, setSortedData] = useState([]);
 
   const [isAscDate, setIsAscDate] = useState(true);
 
@@ -147,7 +147,7 @@ const Kvitton = ({ route }) => {
     endDatetime
   ) => {
     return data.filter((item) => {
-      const itemDatetime = new Date(item.Datetime); // assuming Datetime is a string date in ISO 8601 format
+      const itemDatetime = new Date(item.Datetime); // assuming Datetime is a string date 
       const isAmountInRange =
         item.Total_Amount >= minAmount && item.Total_Amount <= maxAmount;
       const isDatetimeInRange =
@@ -196,12 +196,8 @@ const Kvitton = ({ route }) => {
     );
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      handleRefresh()
-    }, [])
-  );
-
+  
+  console.log(sortedData.length)
   console.log(data)
  
   return (
@@ -240,8 +236,7 @@ const Kvitton = ({ route }) => {
             </View>
           </View>
         }
-        data={sortedData == [] ? sortedData : data[0]}
-        //data={fltr !== [] ? fltr : sortedData !== [s] ? sortedData : data[0]}
+        data={sortedData.length == 0  ? data[0]: sortedData}
         renderItem={renderItem}
         extraData={selectedId}
       />
