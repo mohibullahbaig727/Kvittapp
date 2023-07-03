@@ -44,6 +44,7 @@ const TabScreen = () => {
       image: require("../assets/icons/bank_card_icon.png"),
       function: () => {
         navigation.navigate("Cards");
+        toggleSidebar()
       },
     },
     // {

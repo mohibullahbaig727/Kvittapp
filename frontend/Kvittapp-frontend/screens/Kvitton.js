@@ -85,21 +85,23 @@ const Kvitton = ({ route }) => {
 
   const [isDataFetched, setDataFetched] = useState(false);
 
+  const [fltr, setfltr] = useState(null);
+
+  const [refreshing, setRefreshing] = useState(false);
+
   const {
     selectedCards,
     isAddReceiptToFolder,
     receiptToFolderParams,
     selectedFolderId,
-    updateIsAddReceiptToFolder
+    updateIsAddReceiptToFolder,
   } = useContext(CardContext);
 
   const contextFunction = useContext(CardContext);
 
   const contextProvider = useContext(CardContext);
 
-  const [fltr, setfltr] = useState(null);
-
-  const [refreshing, setRefreshing] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchData();
@@ -107,8 +109,6 @@ const Kvitton = ({ route }) => {
 
   const cardNumbersArray = selectedCards.map((card) => card.cardNumber);
   const API_URL = `${API_BASE_URL}/allReciepts/1?cardNumber=${cardNumbersArray}`;
-
-  const navigation = useNavigation();
 
   const fetchData = async () => {
     try {
@@ -131,6 +131,13 @@ const Kvitton = ({ route }) => {
       setDataFetched(false);
     }
   };
+
+   const handleRefresh = () => {
+    // Set refreshing status to true and trigger fetch data function
+    setRefreshing(true);
+    fetchData();
+  };
+ 
 
   const filterDataByAmountAndDatetimeRange = (
     data,
@@ -189,12 +196,7 @@ const Kvitton = ({ route }) => {
     );
   };
 
-  const handleRefresh = () => {
-    // Set refreshing status to true and trigger fetch data function
-    setRefreshing(true);
-    fetchData();
-  };
-
+ 
   return (
     <View style={{ backgroundColor: "white", height: "100%" }}>
       <FlatList
@@ -231,7 +233,7 @@ const Kvitton = ({ route }) => {
             </View>
           </View>
         }
-        data={sortedData == [] ? sortedData : data[0] }
+        data={sortedData == [] ? sortedData : data[0]}
         //data={fltr !== [] ? fltr : sortedData !== [s] ? sortedData : data[0]}
         renderItem={renderItem}
         extraData={selectedId}
@@ -246,8 +248,8 @@ const Kvitton = ({ route }) => {
               flexDirection: "row",
               paddingVertical: 18,
               borderTopWidth: 2,
-              borderTopColor: '#e6e6e6',
-              backgroundColor: '#fafafa'
+              borderTopColor: "#e6e6e6",
+              backgroundColor: "#fafafa",
             }}
           >
             <RectangularButton
@@ -260,9 +262,9 @@ const Kvitton = ({ route }) => {
               text="add reciept"
               function={async () => {
                 const ID_Folder = selectedFolderId.selectedFolderId.toString();
-                const Folder_name = selectedFolderId.selectedFolderName.toString();
-                const Reciept_Number = isAddReceiptToFolder.ID_Reciept
-
+                const Folder_name =
+                  selectedFolderId.selectedFolderName.toString();
+                const Reciept_Number = isAddReceiptToFolder.ID_Reciept;
 
                 try {
                   const response = await fetch(`${API_BASE_URL}/addFolder/1`, {
@@ -271,33 +273,36 @@ const Kvitton = ({ route }) => {
                       "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                     ID_Folder,
-                     Folder_name,
-                     Reciept_Number
+                      ID_Folder,
+                      Folder_name,
+                      Reciept_Number,
                     }),
                   });
-      
+
                   const data = await response.json();
-      
+
                   if (response.ok) {
-                    console.log("Success", "New folder added successfully", data);
-                    
-                    updateIsAddReceiptToFolder(false)
+                    console.log(
+                      "Success",
+                      "New folder added successfully",
+                      data
+                    );
+
+                    updateIsAddReceiptToFolder(false);
 
                     Toast.show({
                       type: ALERT_TYPE.SUCCESS,
-                      title: 'Success',
-                      textBody: 'Reciept added to folder successfully',
-                    })
+                      title: "Success",
+                      textBody: "Reciept added to folder successfully",
+                    });
                   } else {
                     Toast.show({
                       type: ALERT_TYPE.DANGER,
-                      title: 'Failed',
-                      textBody: 'Something went wrong',
-                    })
+                      title: "Failed",
+                      textBody: "Something went wrong",
+                    });
 
                     console.log("Error", "Failed to add new folder");
-
                   }
                 } catch (error) {
                   console.error("Error adding new folder:", error);

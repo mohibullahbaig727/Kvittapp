@@ -86,7 +86,7 @@ const OpenBuys = ({ navigation }) => {
   const API_URL = `${API_BASE_URL}/allReciepts/1?cardNumber=${cardNumbersArray}`;
   
   useEffect(() => {
-    fetchData();
+      fetchData();
   }, []);
 
   const fetchData = async () => {

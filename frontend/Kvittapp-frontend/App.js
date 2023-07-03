@@ -73,7 +73,6 @@ export default function App() {
                   name="Home"
                   component={HomeStack}
                   options={({ navigation }) => {
-                    const showBackButton = navigation.canGoBack();
                     return {tabBarIcon: () => (
                       <Image
                         style={{ tintColor: "#81A7FF" }}
