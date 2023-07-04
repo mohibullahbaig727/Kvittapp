@@ -16,11 +16,14 @@ const OpenBuysDetails = ({ navigation, route }) => {
   const data = route?.params?.data;
 
   //function to get the total amount of a product selected for return
-  const sumUnitPrice = data.reduce((sum, item) => sum + item.Unit_price_excl_VAT + item.VAT_Amount, 0);
+  const sumUnitPrice = data.reduce(
+    (sum, item) => sum + item.Unit_price_excl_VAT + item.VAT_Amount,
+    0
+  );
 
-console.log(data)
+  console.log(data);
 
-console.log(sumUnitPrice, 'moo')
+  console.log(sumUnitPrice, "moo");
 
   useEffect(() => {
     (async () => {
@@ -177,7 +180,7 @@ console.log(sumUnitPrice, 'moo')
                   alignSelf: "center",
                   marginTop: 6,
                   paddingHorizontal: 12,
-                  paddingVertical: 8
+                  paddingVertical: 8,
                 }}
               >
                 <TextInput
@@ -243,7 +246,7 @@ console.log(sumUnitPrice, 'moo')
                     data[0].ID_Reciept,
                     data[0].Store_Name,
                     "Pending",
-                    1,
+                    data[0].Quantity,
                     data[0].Product,
                     data[0].Product_name,
                     sumUnitPrice,

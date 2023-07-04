@@ -294,7 +294,7 @@ const ReturnDetails = ({ navigation, route }) => {
                     <Text style={styles.regularText}>Total Amount</Text>
                   </View>
                   <Text style={styles.regularText}>
-                    {routeData.Return_Amount}
+                    {routeData.Return_Amount} Kr
                   </Text>
                 </View>
               </View>

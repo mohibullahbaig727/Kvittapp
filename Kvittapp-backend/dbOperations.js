@@ -287,18 +287,25 @@ async function addReturn(
     await sql.connect(config);
 
     // Get the last ID_return_row value
-    const result =
-      await sql.query`SELECT TOP 1 ID_return_row FROM dim.Returns ORDER BY ID_return_row DESC`;
+    const result = await sql.query`
+      SELECT TOP 1 ID_Return
+      FROM dim.Returns
+      ORDER BY ID_Return DESC
+    `;
+
+    // Calculate the new ID_Return based on the previous row's value
+    const previousIDReturn = result.recordset[0]?.ID_Return || 0;
+    const newIDReturn = previousIDReturn + 1;
 
     // Get the current date
     const currentDate = new Date();
 
-    // Insert the new row into the database
+    // Insert the new row into the database with the new ID_Return
     await sql.query`
       INSERT INTO dim.Returns
-        ( ID_Return,  ID_User, ID_Reciept, Store_name, Return_status, Return_date_created, Return_quantity, Product, Product_name, Return_Amount, Return_reason, Return_comment, Return_option)
+        (ID_Return, ID_User, ID_Reciept, Store_name, Return_status, Return_date_created, Return_quantity, Product, Product_name, Return_Amount, Return_reason, Return_comment, Return_option)
       VALUES
-        ( null, ${ID_User}, ${ID_Reciept}, ${Store_name}, ${Return_status}, ${currentDate}, ${Return_quantity}, ${Product}, ${Product_name}, ${Return_Amount}, ${Return_reason}, ${Return_comment}, ${Return_option})
+        (${newIDReturn}, ${ID_User}, ${ID_Reciept}, ${Store_name}, ${Return_status}, ${currentDate}, ${Return_quantity}, ${Product}, ${Product_name}, ${Return_Amount}, ${Return_reason}, ${Return_comment}, ${Return_option})
     `;
 
     // Close the database connection
@@ -307,6 +314,7 @@ async function addReturn(
     console.error(err);
   }
 }
+
 
 //create a new folder |||| can also be used to add reciept to a folder
 async function addNewFolder(ID_User, body) {

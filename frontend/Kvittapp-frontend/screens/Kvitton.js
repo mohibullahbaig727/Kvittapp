@@ -197,14 +197,9 @@ const Kvitton = ({ route }) => {
   };
 
   
-  console.log(sortedData.length)
-  console.log(data)
 
-  useFocusEffect(
-    React.useCallback(() => {
-      handleRefresh();
-    }, [])
-  );
+
+
 
   return (
     <View style={{ backgroundColor: "white", height: "100%" }}>

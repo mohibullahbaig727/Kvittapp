@@ -308,7 +308,7 @@ const KvittoDetails = ({ navigation, route }) => {
                     <Text style={styles.regularText}>Total Amount</Text>
                   </View>
                   <Text style={styles.regularText}>
-                    {data[0][0]?.Total_Amount}
+                    {data[0][0]?.Total_Amount} Kr
                   </Text>
                 </View>
               </View>
