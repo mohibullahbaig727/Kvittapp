@@ -11,9 +11,12 @@ import RectangularButton from "./RectangularButton";
 import DropDownField from "./DropDownField";
 import MyDatePicker from "./DatePicker";
 import CardContext from "../CardContext";
+import { useNavigation } from "@react-navigation/native";
 
 const BottomModalSheetFilter = ({ visible, onClose, onFilter }) => {
   const modalRef = useRef(null);
+
+  const navigation = useNavigation();
 
   const [selectedAmountRange, setSelectedAmountRange] = useState("");
   const [selectedStartDate, setSelectedStartDate] = useState("");
@@ -117,6 +120,7 @@ const BottomModalSheetFilter = ({ visible, onClose, onFilter }) => {
             text="Filter"
             function={() => {
               updateFilterParams({ selectedStartDate, selectedEndDate, selectedAmountRange })
+              navigation.navigate('Home')
             onClose()
             }}
           />

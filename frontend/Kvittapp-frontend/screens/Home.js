@@ -23,19 +23,29 @@ const TabScreen = () => {
       label: "Filters",
       value: "filters",
       image: require("../assets/icons/filter_icon.png"),
-      function: () => setFilterModalVisible(true),
+      function: () => {
+        setFilterModalVisible(true)
+        toggleSidebar()
+      },
     },
     {
       label: "Folders",
       value: "folders",
       image: require("../assets/icons/folderIcon.png"),
-      function: () => navigation.navigate("Folders"),
+      function: () => {
+        navigation.navigate("Folders")
+        toggleSidebar()
+      },
+      
     },
     {
       label: "Scan Receipt",
       value: "scanReceipt",
       image: require("../assets/icons/scan_receipt_icon.png"),
-      function: () => console.log("scan kvitto"),
+      function: () => {
+        console.log("scan kvitto")
+        toggleSidebar()
+      },
     },
      
     {
@@ -83,7 +93,10 @@ const TabScreen = () => {
       label: "Settings",
       value: "settings",
       image: require("../assets/icons/settingsIcon.png"),
-      function: () => navigation.navigate("Settings"),
+      function: () => {
+        navigation.navigate("Settings")
+        toggleSidebar()
+      },
     },
     {
       label: "Log out",
