@@ -15,7 +15,6 @@ import Receipt, {
   handleDownloadReceipt,
   handleEmailReceipt,
 } from "../components/ReceiptAsPdf";
-import TransparentDialogBox from "../components/DialogBox";
 import { API_BASE_URL } from "../constants";
 import Dropdown from "../components/NewDropDown";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
@@ -50,7 +49,10 @@ const ReturnDetails = ({ navigation, route }) => {
       leftIcon: <Image style={{height:12, width:12, tintColor:'black', resizeMode:'contain'}} source={require('../assets/icons/returnsIcon.png')} /> ,
       text: "Cancel Return",
       rightIcon: "md-checkmark",
-      functions: () => updateReturnStatus(routeData.ID_Return, 'Canceled'),
+      functions: () => {
+        updateReturnStatus(routeData.ID_Return, 'Canceled')
+        handleRefresh()
+      },
     },
     
   ];
@@ -81,6 +83,8 @@ const ReturnDetails = ({ navigation, route }) => {
     }
   };
 
+
+  console.log(data, ' moooooooo')
   const handleRefresh = () => {
     // Set refreshing status to true and trigger fetch data function
     setisLoading(true);
@@ -180,7 +184,7 @@ const ReturnDetails = ({ navigation, route }) => {
           <View>
             <View style={styles.openBuyDetailsContainer}>
               <Text style={styles.regularText}>
-                Status: {routeData?.Return_status}
+                Status: {data[0][0].Return_status}
                 </Text>
                 <Text style={styles.regularText}>
                 Return ID: {routeData?.ID_Return}

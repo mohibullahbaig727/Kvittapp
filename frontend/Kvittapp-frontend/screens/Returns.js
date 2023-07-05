@@ -52,7 +52,7 @@ const Item = ({ item, onPress }) => (
       <View style={styles.amountContainer}>
         <Text style={{ fontFamily: "BalooChettan2-Regular", marginRight: 4 }}>
           {/* {(item?.Unit_price_excl_VAT + item?.VAT_Amount) * item?.Quantity} */}
-          {item?.Return_Amount}
+          {item?.Return_Amount} Kr
        </Text>
         <CircularButton text=">" />
       </View>

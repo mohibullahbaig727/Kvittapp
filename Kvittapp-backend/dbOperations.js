@@ -93,7 +93,7 @@ async function getSingleReturnDetail(ID_Return) {
       .request()
       .input("input_parameter", sql.BigInt, ID_Return)
       .query(
-        "SELECT * FROM dim.Return_details where ID_Return = @input_parameter"
+        "SELECT * FROM dim.Returns where ID_Return = @input_parameter"
       );
 
     return reciepts.recordsets;
@@ -298,7 +298,8 @@ async function addReturn(
     const newIDReturn = previousIDReturn + 1;
 
     // Get the current date
-    const currentDate = new Date();
+    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
 
     // Insert the new row into the database with the new ID_Return
     await sql.query`
