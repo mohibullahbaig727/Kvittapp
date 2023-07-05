@@ -267,6 +267,8 @@ const Kvitton = ({ route }) => {
                 const ID_Folder = selectedFolderId.selectedFolderId.toString();
                 const Folder_name =
                   selectedFolderId.selectedFolderName.toString();
+                  const Folder_color =
+                  selectedFolderId.selectedFolderColor.toString();
                 const Reciept_Number = isAddReceiptToFolder.ID_Reciept;
 
                 try {
@@ -278,6 +280,7 @@ const Kvitton = ({ route }) => {
                     body: JSON.stringify({
                       ID_Folder,
                       Folder_name,
+                      Folder_color,
                       Reciept_Number,
                     }),
                   });

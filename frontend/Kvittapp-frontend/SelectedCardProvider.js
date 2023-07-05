@@ -4,6 +4,7 @@ import CardContext from "./CardContext";
 const SelectedCardsProvider = ({ children }) => {
   const [selectedCards, setSelectedCards] = useState([]);
   const [folderName, setFolderName] = useState('');
+  const [folderColor, setFolderColor] = useState('');
   const [filterParams, setFilterParams] = useState({})
   const [isAddReceiptToFolder, setIsAddReceiptToFolder] = useState(false)
   const [selectedFolderId, setSelectedFolderId] = useState(null)
@@ -15,6 +16,10 @@ const SelectedCardsProvider = ({ children }) => {
 
   const updateFolderName = (newFolderName) => {
     setFolderName(newFolderName);
+  };
+
+  const updateFolderColor = (newFolderColor) => {
+    setFolderColor(newFolderColor);
   };
 
   const updateFilterParams = (newFilterParams) => {
@@ -44,6 +49,8 @@ const SelectedCardsProvider = ({ children }) => {
         updateSelectedCards,
         folderName,
         updateFolderName,
+        folderColor,
+        updateFolderColor,
         filterParams,
         updateFilterParams,
         isAddReceiptToFolder,

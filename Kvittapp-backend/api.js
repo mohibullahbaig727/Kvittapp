@@ -215,12 +215,13 @@ router.post("/userReturns/:ID_User/addReturn", async (req, res) => {
 //add a folder api
 router.post("/addFolder/:ID_User", async (req, res) => {
   const ID_User = req.params.ID_User;
-  const { ID_Folder, Folder_name, Reciept_Number } = req.body;
+  const { ID_Folder, Folder_name, Folder_color, Reciept_Number } = req.body;
 
   try {
     await dbOperations.addNewFolder(ID_User, {
       ID_Folder,
       Folder_name,
+      Folder_color,
       Reciept_Number,
     });
     res.status(201).json({ message: "New folder added successfully" });

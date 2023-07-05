@@ -13,10 +13,12 @@ const FoldersScreen = ({ navigation }) => {
   const [folderData, setFolderData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  const ID_Folder = "7";
+  const ID_Folder = 7;
 
   const contextData = useContext(CardContext)
   const Folder_name = contextData.folderName
+  const Folder_color = contextData.folderColor
+
 
   const API_URL = `${API_BASE_URL}/folders/1`;
 
@@ -25,7 +27,6 @@ const FoldersScreen = ({ navigation }) => {
       const response = await fetch(API_URL);
       const json = await response.json();
       setFolderData(json);
-      console.log(folderData);
       setRefreshing(false)
     } catch (error) {
       console.error(error);
@@ -43,6 +44,8 @@ const FoldersScreen = ({ navigation }) => {
     fetchData();
   };
 
+  console.log(folderData)
+
   return (
     <View style={styles.container}>
       <CreateFolderDialog
@@ -57,8 +60,8 @@ const FoldersScreen = ({ navigation }) => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                ID_Folder,
                 Folder_name,
+                Folder_color
               }),
             });
 
@@ -115,14 +118,14 @@ const FoldersScreen = ({ navigation }) => {
               <View style={styles.folderItem}>
                 <View style={styles.folderItemLeft}>
                   <Image
-                    style={styles.folderIcon}
+                    style={[styles.folderIcon, {tintColor: data.Folder_color}]}
                     source={require("../assets/icons/folderIcon.png")}
                   />
                   
                   <Text style={styles.label}>{data.Folder_name}</Text>
                 </View>
                 <View style={styles.folderItemRight}>
-                  <Text style={styles.label}>{data.ID_Folder} Receipt/s</Text>
+                  <Text style={styles.label}>{data.NumOfReceipts - 1} Receipt/s</Text>
                   {isDeleteSelected ? (
                     <TouchableOpacity
                       style={styles.cancelButtonIcon}

@@ -147,6 +147,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
     }
   };
 
+
   useEffect(() => {
     fetchData();
   }, [isDataFetched]);
@@ -187,7 +188,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
               >
                 <View style={{ flexDirection: "row", alignSelf: "center" }}>
                   <Image
-                    style={{ height: 32, width: 32 }}
+                    style={{ height: 32, width: 32, tintColor: route.params?.data?.Folder_color }}
                     source={require("../assets/icons/folderIcon.png")}
                   />
                   <Text
@@ -209,6 +210,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
                       updateSelectedFolderId({
                         selectedFolderId: folderDetails.ID_Folder,
                         selectedFolderName: folderDetails.Folder_name,
+                        selectedFolderColor : folderDetails.Folder_color,
                       });
                       updateIsAddReceiptToFolder(true);
                       navigation.navigate("Home");

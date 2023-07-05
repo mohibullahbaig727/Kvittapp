@@ -32,7 +32,7 @@ async function getReceiptsInFolder(ID_User, ID_Folder) {
       .request()
       .input("input_parameter", sql.VarChar, ID_User)
       .input("input_ID_Folder", sql.Int, ID_Folder).query(`
-      SELECT DISTINCT rd.ID_Reciept, sd.Logo_URL, rd.store_Name, rd.Datetime, rd.Total_Amount, fd.Folder_name, fd.Reciept_Number
+      SELECT DISTINCT rd.ID_Reciept, sd.Logo_URL, rd.store_Name, rd.Datetime, rd.Total_Amount, fd.Folder_name, fd.Reciept_Number, fd.Folder_color
       FROM dim.Reciept_details rd
       JOIN dim.Store_details sd ON rd.Store_Name = sd.Store_name 
       JOIN dim.Folder_Details fd ON fd.Reciept_Number= rd.ID_Reciept 
@@ -152,13 +152,18 @@ async function getAllUserDetails(ID_User) {
 async function getFolders(userId) {
   try {
     await sql.connect(config);
-    const result =
-      await sql.query`SELECT DISTINCT ID_Folder, Folder_name FROM dim.Folder_Details WHERE ID_User = ${userId}`;
+    const result = await sql.query`
+      SELECT ID_Folder, Folder_name, Folder_color, COUNT(*) AS NumOfReceipts
+      FROM dim.Folder_Details
+      WHERE ID_User = ${userId}
+      GROUP BY ID_Folder, Folder_name, Folder_color
+    `;
     return result.recordset;
   } catch (err) {
     console.error(err);
   }
 }
+
 
 //function to delete cards
 async function removeCard(ID_User, cardNumber) {
@@ -319,24 +324,53 @@ async function addReturn(
 
 //create a new folder |||| can also be used to add reciept to a folder
 async function addNewFolder(ID_User, body) {
-  const { ID_Folder, Folder_name, Reciept_Number } = body;
+  const { ID_Folder , Folder_name, Reciept_Number, Folder_color, } = body;
 
   try {
     await sql.connect(config);
     const request = new sql.Request();
     request.input("ID_User", sql.Int, ID_User);
-    request.input("ID_Folder", sql.Int, ID_Folder);
     request.input("Folder_name", sql.NVarChar(50), Folder_name);
+    request.input("Folder_color", sql.NVarChar, Folder_color);
     request.input("Reciept_Number", sql.Int, Reciept_Number);
 
-    const query = `
-      INSERT INTO [dim].[Folder_Details]
-        ( [ID_Folder], [Folder_name], [ID_User], [Reciept_Number])
-      VALUES
-        ( @ID_Folder, @Folder_name, @ID_User, @Reciept_Number)
-    `;
+    let query, result;
+    if (ID_Folder) {
+      // If ID_Folder is provided, use it directly
+      request.input("ID_Folder", sql.Int, ID_Folder);
+      query = `
+        INSERT INTO [dim].[Folder_Details]
+          ([ID_Folder], [Folder_name], [Folder_color], [ID_User], [Reciept_Number])
+        VALUES
+          (@ID_Folder, @Folder_name, @Folder_color, @ID_User, @Reciept_Number)
+      `;
+      result = await request.query(query);
+    } else {
+      // If ID_Folder is not provided, fetch the last ID_Folder value and increment it by 1
+      query = `
+        SELECT TOP 1 [ID_Folder]
+        FROM [dim].[Folder_Details]
+        WHERE [ID_User] = @ID_User
+        ORDER BY [ID_Folder] DESC
+      `;
+      const previousResult = await request.query(query);
 
-    const result = await request.query(query);
+      let newID_Folder = 1;
+      if (previousResult.recordset.length > 0) {
+        const lastID_Folder = previousResult.recordset[0].ID_Folder;
+        newID_Folder = lastID_Folder + 1;
+      }
+
+      request.input("ID_Folder", sql.Int, newID_Folder);
+      query = `
+        INSERT INTO [dim].[Folder_Details]
+          ([ID_Folder], [Folder_name], [Folder_color], [ID_User], [Reciept_Number])
+        VALUES
+          (@ID_Folder, @Folder_name, @Folder_color, @ID_User, @Reciept_Number)
+      `;
+      result = await request.query(query);
+    }
+
     console.log("New folder added to the database:", result);
   } catch (err) {
     console.error("Error adding new folder to the database:", err);
@@ -344,6 +378,8 @@ async function addNewFolder(ID_User, body) {
     sql.close();
   }
 }
+
+
 
 async function deleteFolder(ID_User, ID_Folder) {
   try {
