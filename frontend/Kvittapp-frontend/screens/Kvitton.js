@@ -305,6 +305,7 @@ const Kvitton = ({ route }) => {
                     });
             
                     contextFunction.updateReceiptToFolderParams(null);
+                    navigation.navigate("Folders")
                   } else {
                     Toast.show({
                       type: ALERT_TYPE.DANGER,

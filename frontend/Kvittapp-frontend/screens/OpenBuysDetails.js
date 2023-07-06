@@ -1,14 +1,14 @@
-import { Camera } from "expo-camera";
+// import { Camera } from "expo-camera";
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
-import { CameraModule } from "../components/CameraModule";
+// import { CameraModule } from "../components/CameraModule";
 import RectangularButton from "../components/RectangularButton";
 import { addReturn } from "../services/add";
 import Dropdown from "../components/NewDropDown";
 
 const OpenBuysDetails = ({ navigation, route }) => {
   const [image, setImage] = useState(null);
-  const [camera, setShowCamera] = useState(false);
+  // const [camera, setShowCamera] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
   const [reasonSelected, setReasonSelected] = useState("Return Reason");
   const [optionalReason, setOptionalReason] = useState(null);
@@ -25,18 +25,18 @@ const OpenBuysDetails = ({ navigation, route }) => {
 
   console.log(sumUnitPrice, "moo");
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Camera.requestPermissionsAsync();
+  //     setHasPermission(status === "granted");
+  //   })();
+  // }, []);
+  // if (hasPermission === null) {
+  //   return <View />;
+  // }
+  // if (hasPermission === false) {
+  //   return <Text>No access to camera</Text>;
+  // }
 
   // const returnResons = [
   //   { id: 1, title: "Bad Quality" },
@@ -263,13 +263,13 @@ const OpenBuysDetails = ({ navigation, route }) => {
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
-            {camera && (
+            {/* {camera && (
               <CameraModule
                 showModal={camera}
                 setModalVisible={() => setShowCamera(false)}
                 setImage={(result) => setImage(result.uri)}
               />
-            )}
+            )} */}
           </View>
         </View>
       </ScrollView>
