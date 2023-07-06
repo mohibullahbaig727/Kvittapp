@@ -160,7 +160,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
         item={item}
         isRemoveReciept={isRemoveReciept}
         folderId={route.params?.data.ID_Folder}
-        onPress={() => console.log(item.id)}
+        onPress={() => navigation.navigate("KvittoDetails", { data: item })}
         refreshFunction={()=> handleRefresh()}
       />
     );
