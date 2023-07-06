@@ -38,9 +38,19 @@ const SelectedCardsProvider = ({ children }) => {
 
 
   const updateReceiptToFolderParams = (newReceiptToFolderParams) => {
-    setReceiptToFolderParams(...receiptToFolderParams ,newReceiptToFolderParams);
+    // Check if the newReceiptToFolderParams parameter is null or empty
+    if (!newReceiptToFolderParams) {
+      // Empty the array by setting it to an empty array
+      setReceiptToFolderParams([]);
+    } else if (receiptToFolderParams.includes(newReceiptToFolderParams)) {
+      // Remove the existing value from the array
+      setReceiptToFolderParams(receiptToFolderParams.filter(param => param !== newReceiptToFolderParams));
+    } else {
+      // Add the new value to the array
+      setReceiptToFolderParams([...receiptToFolderParams, newReceiptToFolderParams]);
+    }
   };
-
+  
 
   return (
     <CardContext.Provider

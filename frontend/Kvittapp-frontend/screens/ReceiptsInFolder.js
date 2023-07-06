@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import SortButton from "../components/SortButton";
 import CardContext from "../CardContext";
 
-const Item = ({ item, onPress, folderId, isRemoveReciept }) => (
+const Item = ({ item, onPress, folderId, isRemoveReciept, refreshFunction }) => (
   <TouchableOpacity onPress={onPress}>
     <View
       style={{
@@ -81,6 +81,8 @@ const Item = ({ item, onPress, folderId, isRemoveReciept }) => (
 
                 if (response.ok) {
                   console.log("receipt deleted successfully");
+                  refreshFunction()
+                  
                   // Handle success case here
                 } else {
                   console.error(
@@ -159,6 +161,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
         isRemoveReciept={isRemoveReciept}
         folderId={route.params?.data.ID_Folder}
         onPress={() => console.log(item.id)}
+        refreshFunction={()=> handleRefresh()}
       />
     );
   };

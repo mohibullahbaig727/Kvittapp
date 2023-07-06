@@ -22,6 +22,8 @@ const SquareRadioButton = ({ selected, onPress, label }) => {
           borderWidth: 2,
           borderRadius: 5,
           borderColor: "#81A7FF",
+          alignContent: 'center',
+          alignSelf:'center',
           backgroundColor: isSelected ? "#81A7FF" : "white",
         }}
       />

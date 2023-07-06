@@ -60,10 +60,13 @@ const Item = ({ item, onPress, icon, contextFunctions }) => (
       >
         <Text>{item.Total_Amount} kr</Text>
         {icon ? (
-          <SquareRadioButton
+          <View style={{marginLeft: 8}}>
+            <SquareRadioButton
             label=" "
-            onPress={() => contextFunctions.updateIsAddReceiptToFolder(item)}
+            onPress={() => contextFunctions.updateReceiptToFolderParams(item.ID_Reciept)}
           />
+            </View>
+          
         ) : (
           <CircularButton marginLeft={6} text=">" />
         )}
@@ -96,6 +99,8 @@ const Kvitton = ({ route }) => {
     selectedFolderId,
     updateIsAddReceiptToFolder,
   } = useContext(CardContext);
+
+ console.log(receiptToFolderParams, 'mooo')
 
   const contextFunction = useContext(CardContext);
 
@@ -137,6 +142,7 @@ const Kvitton = ({ route }) => {
     setRefreshing(true);
     fetchData();
   };
+
  
 
   const filterDataByAmountAndDatetimeRange = (
@@ -196,10 +202,6 @@ const Kvitton = ({ route }) => {
     );
   };
 
-  
-
-
-
 
   return (
     <View style={{ backgroundColor: "white", height: "100%" }}>
@@ -258,62 +260,66 @@ const Kvitton = ({ route }) => {
             <RectangularButton
               smallButton={true}
               text="cancel"
-              function={() => console.log(receiptToFolderParams)}
+              function={() => {
+                updateIsAddReceiptToFolder(false);
+                contextFunction.updateReceiptToFolderParams(null)
+              }}
             />
             <RectangularButton
               smallButton={true}
-              text="add reciept"
+              text="add receipt"
               function={async () => {
                 const ID_Folder = selectedFolderId.selectedFolderId.toString();
-                const Folder_name =
-                  selectedFolderId.selectedFolderName.toString();
-                  const Folder_color =
-                  selectedFolderId.selectedFolderColor.toString();
-                const Reciept_Number = isAddReceiptToFolder.ID_Reciept;
-
+                const Folder_name = selectedFolderId.selectedFolderName.toString();
+                const Folder_color = selectedFolderId.selectedFolderColor.toString();
+                const Receipt_Number = receiptToFolderParams;
+                let response;
+              
                 try {
-                  const response = await fetch(`${API_BASE_URL}/addFolder/1`, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      ID_Folder,
-                      Folder_name,
-                      Folder_color,
-                      Reciept_Number,
-                    }),
-                  });
-
+                  for (const recNumber of Receipt_Number) {
+                     response = await fetch(`${API_BASE_URL}/addFolder/1`, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        ID_Folder,
+                        Folder_name,
+                        Folder_color,
+                        Reciept_Number: recNumber,
+                      }),
+                    });
+              
+                   
+                  }
                   const data = await response.json();
-
+              
                   if (response.ok) {
-                    console.log(
-                      "Success",
-                      "New folder added successfully",
-                      data
-                    );
-
+                    console.log("Success", "New folder added successfully", data);
                     updateIsAddReceiptToFolder(false);
-
+            
                     Toast.show({
                       type: ALERT_TYPE.SUCCESS,
                       title: "Success",
-                      textBody: "Reciept added to folder successfully",
+                      textBody: "Receipt added to folder successfully",
                     });
+            
+                    contextFunction.updateReceiptToFolderParams(null);
                   } else {
                     Toast.show({
                       type: ALERT_TYPE.DANGER,
                       title: "Failed",
                       textBody: "Something went wrong",
                     });
-
+            
                     console.log("Error", "Failed to add new folder");
                   }
-                } catch (error) {
+                }
+                catch (error) {
                   console.error("Error adding new folder:", error);
                 }
-              }}
+              }
+            }
             />
           </View>
         ) : null}
