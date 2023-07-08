@@ -125,7 +125,7 @@ const FoldersScreen = ({ navigation }) => {
                   <Text style={styles.label}>{data.Folder_name}</Text>
                 </View>
                 <View style={styles.folderItemRight}>
-                  <Text style={styles.label}>{data.NumOfReceipts - 1} Receipt/s</Text>
+                  <Text style={styles.label}>{data.NumOfReceipts - 1} {data.NumOfReceipts == 2 ? 'Receipt' : 'Receipts' }</Text>
                   {isDeleteSelected ? (
                     <TouchableOpacity
                       style={styles.cancelButtonIcon}

@@ -279,7 +279,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
           >
             <RectangularButton
               smallButton={true}
-              text="Remove receipt/s"
+              text="Remove receipts"
               inactiveButton = {selectedReceipts.length == 0 }
               function={async () => {
                 {
