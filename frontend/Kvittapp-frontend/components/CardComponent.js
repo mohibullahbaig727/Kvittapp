@@ -8,6 +8,8 @@ const CardComponent = (props) => {
   const { selectedCards, updateSelectedCards } = useContext(CardContext);
 
 
+console.log(selectedCards)
+
   return (
     <View>
       <View
@@ -76,7 +78,8 @@ const CardComponent = (props) => {
                 updateSelectedCards([...selectedCards, cardData]);
               }
               props.handleRadioPress;
-            }}
+            }
+            }
           />
         </View>
       ) : null}

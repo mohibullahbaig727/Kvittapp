@@ -408,21 +408,22 @@ async function deleteReceiptInFolder(ID_User, ID_Folder, Reciept_Number) {
     const request = new sql.Request();
     request.input("ID_User", sql.Int, ID_User);
     request.input("ID_Folder", sql.Int, ID_Folder);
-    request.input("Reciept_Number", sql.Int, Reciept_Number);
+    request.input("Reciept_Number", sql.NVarChar, Reciept_Number.join(","));
 
     const query = `
       DELETE FROM [dim].[Folder_Details]
-      WHERE [ID_User] = @ID_User AND [Reciept_Number] = @Reciept_Number
+      WHERE [ID_User] = @ID_User AND [Reciept_Number] IN (SELECT value FROM STRING_SPLIT(@Reciept_Number, ','))
     `;
 
     const result = await request.query(query);
-    console.log("receipt in Folder deleted from the database:", result);
+    console.log("receipts in Folder deleted from the database:", result);
   } catch (err) {
-    console.error("Error deleting receipt in folder from the database:", err);
+    console.error("Error deleting receipts in folder from the database:", err);
   } finally {
     sql.close();
   }
 }
+
 
 
 async function updateReturnStatus(ID_Return, newStatus) {

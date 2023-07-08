@@ -253,7 +253,7 @@ router.delete(
   async (req, res) => {
     const ID_User = req.params.ID_User;
     const ID_Folder = req.params.ID_Folder;
-    const Reciept_Number = req.params.Reciept_Number;
+    const Reciept_Number = req.params.Reciept_Number.split(",");
 
     try {
       await dbOperations.deleteReceiptInFolder(
@@ -263,15 +263,16 @@ router.delete(
       );
       res
         .status(200)
-        .json({ message: "Receipt from folder deleted successfully" });
+        .json({ message: "Receipts from folder deleted successfully" });
     } catch (error) {
-      console.error("Error deleting Receipt from folder:", error);
+      console.error("Error deleting receipts from folder:", error);
       res.status(500).json({
-        error: "An error occurred while deleting receipt frrom folder",
+        error: "An error occurred while deleting receipts from folder",
       });
     }
   }
 );
+
 
 router.put("/updateReturnStatus/:ID_Return", async (req, res) => {
   const ID_Return = req.params.ID_Return;
