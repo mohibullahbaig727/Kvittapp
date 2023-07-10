@@ -7,7 +7,7 @@ const InputField = (props) => {
     <View
       style={{
         backgroundColor: "#E6E6E6",
-        borderRadius: 12,
+        borderRadius: 6,
         paddingHorizontal: 8,
         justifyContent: "center",
         height: Dimensions.get("window").height * 0.035,

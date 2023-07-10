@@ -12,6 +12,7 @@ import InputField from "./InputField";
 import CardContext from "../CardContext";
 import Dropdown from "./NewDropDown";
 import OverlappingDropDown from "./OverlappingDropDown";
+import RectangularButton from "./RectangularButton";
 
 const CreateFolderDialog = ({ visible, onClose, title, message, onYes }) => {
   const [fadeAnim] = useState(new Animated.Value(0));
@@ -119,7 +120,8 @@ const CreateFolderDialog = ({ visible, onClose, title, message, onYes }) => {
               flexDirection: "row",
               justifyContent: "space-around",
               width: "100%",
-              paddingTop: 22
+              paddingTop: 22,
+              zIndex:-1
             }}
           >
             <TouchableOpacity style={styles.button} onPress={onClose}>
@@ -164,7 +166,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 8,
     width: 120,
-    zIndex:0
   },
   buttonText: {
     color: "white",
