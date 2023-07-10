@@ -75,7 +75,7 @@ const ChooseProducts = ({ navigation, route }) => {
                   }}
                 >
                   <Text style={styles.regularText}>
-                    {returnItem?.Unit_price_excl_VAT} Kr
+                    {returnItem?.Unit_price_excl_VAT + returnItem?.VAT_Amount } Kr
                   </Text>
                   <SquareRadioButton
                     label=" "
@@ -134,9 +134,14 @@ const ChooseProducts = ({ navigation, route }) => {
           alignItems: "center",
         }}
       >
+         <RectangularButton
+          smallButton={true}
+          text="Cancel"
+          function={() => navigation.pop()}
+        />
         <RectangularButton
           smallButton={true}
-          inactiveButton={selectedReturnItems == null ? true : false}
+          inactiveButton={selectedReturnItems.length == 0}
           text="Next"
           function={() =>
             navigation.navigate("OpenBuysDetails", {
@@ -144,11 +149,7 @@ const ChooseProducts = ({ navigation, route }) => {
             })
           }
         />
-        <RectangularButton
-          smallButton={true}
-          text="Cancel"
-          function={() => navigation.pop()}
-        />
+       
       </View>
     </View>
   );

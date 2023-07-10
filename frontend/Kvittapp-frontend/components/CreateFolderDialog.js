@@ -11,6 +11,7 @@ import {
 import InputField from "./InputField";
 import CardContext from "../CardContext";
 import Dropdown from "./NewDropDown";
+import OverlappingDropDown from "./OverlappingDropDown";
 
 const CreateFolderDialog = ({ visible, onClose, title, message, onYes }) => {
   const [fadeAnim] = useState(new Animated.Value(0));
@@ -21,37 +22,37 @@ const CreateFolderDialog = ({ visible, onClose, title, message, onYes }) => {
       leftIcon: null,
       text: "Black",
       rightIcon: null,
-      functions: () => updateFolderColor("#575757"),
+      functions: () => updateFolderColor("black") ,
     },
     {
       leftIcon: null,
-      text: "Blue/Cyan",
+      text: "Blue",
       rightIcon: null,
-      functions: () => updateFolderColor("#75B8CD"),
+      functions: () => updateFolderColor("cyan"),
     },
     {
       leftIcon: null,
       text: "Red",
       rightIcon: null,
-      functions: () => updateFolderColor("#CD7575"),
+      functions: () => updateFolderColor("red"),
     },
     {
       leftIcon: null,
       text: "Green",
       rightIcon: null,
-      functions: () => updateFolderColor("#81CD75"),
+      functions: () => updateFolderColor("green"),
     },
     {
       leftIcon: null,
-      text: "Pink/Purple",
+      text: "Pink",
       rightIcon: null,
-      functions: () => updateFolderColor("#B175CD"),
+      functions: () => updateFolderColor("pink"),
     },
     {
       leftIcon: null,
       text: "Gold",
       rightIcon: null,
-      functions: () => updateFolderColor("#CDBA75"),
+      functions: () => updateFolderColor("gold"),
     },
    
   ];
@@ -105,7 +106,7 @@ const CreateFolderDialog = ({ visible, onClose, title, message, onYes }) => {
           {/* <View style={{ width: "100%" }}>
             <InputField placeholder={'Enter a folder color'} onTextChange={ color=> updateFolderColor(color) }/>
           </View> */}
-          <Dropdown
+          <OverlappingDropDown
                     leftIcon="md-arrow-dropdown"
                     text= {folderColor == '' ? 'Select Color' : folderColor}
                     rightIcon="../assets/icons/arrowDown.png"
@@ -162,7 +163,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#81A7FF",
     borderRadius: 5,
     paddingVertical: 8,
-    width:120
+    width: 120,
+    zIndex:0
   },
   buttonText: {
     color: "white",
