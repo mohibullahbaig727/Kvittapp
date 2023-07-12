@@ -29,7 +29,7 @@ const CreateFolderDialog = ({ visible, onClose, title, message, onYes }) => {
       leftIcon: null,
       text: "Blue",
       rightIcon: null,
-      functions: () => updateFolderColor("cyan"),
+      functions: () => updateFolderColor("blue"),
     },
     {
       leftIcon: null,

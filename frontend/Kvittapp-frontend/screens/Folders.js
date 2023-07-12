@@ -5,6 +5,7 @@ import CreateFolderDialog from "../components/CreateFolderDialog";
 import { API_BASE_URL } from "../constants";
 import CardContext from "../CardContext";
 import { ALERT_TYPE, AlertManager, AlertNotification, Toast } from 'react-native-alert-notification';
+import TransparentDialogBox from "../components/DialogBox";
 
 
 const FoldersScreen = ({ navigation }) => {
@@ -12,8 +13,8 @@ const FoldersScreen = ({ navigation }) => {
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [folderData, setFolderData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [dialogId, setDialogId] = useState(null);
 
-  const ID_Folder = 7;
 
   const contextData = useContext(CardContext)
   const Folder_name = contextData.folderName
@@ -37,6 +38,16 @@ const FoldersScreen = ({ navigation }) => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  
+  const handleCloseDialog = () => {
+    setDialogId(null);
+  };
+
+  
+  const handleShowDialog = (id) => {
+    setDialogId(id);
+  };
 
   const handleRefresh = () => {
     // Set refreshing status to true and trigger fetch data function
@@ -105,8 +116,9 @@ const FoldersScreen = ({ navigation }) => {
         <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
       }
       >
-        {folderData.map((data) => (
-          <TouchableOpacity
+        {folderData.map((data) => {
+          const isDialogVisible = dialogId === data.ID_Folder;
+          return (<TouchableOpacity
             key={data.ID_Folder}
             onPress={() =>
               navigation.navigate("ReceiptsInFolder", {
@@ -118,19 +130,21 @@ const FoldersScreen = ({ navigation }) => {
               <View style={styles.folderItem}>
                 <View style={styles.folderItemLeft}>
                   <Image
-                    style={[styles.folderIcon, {tintColor: data.Folder_color}]}
+                    style={[styles.folderIcon, { tintColor: data.Folder_color }]}
                     source={require("../assets/icons/folderIcon.png")}
                   />
                   
                   <Text style={styles.label}>{data.Folder_name}</Text>
                 </View>
                 <View style={styles.folderItemRight}>
-                  <Text style={styles.label}>{data.NumOfReceipts - 1} {data.NumOfReceipts == 2 ? 'Receipt' : 'Receipts' }</Text>
-                  {isDeleteSelected ? (
-                    <TouchableOpacity
-                      style={styles.cancelButtonIcon}
-                      onPress={async () => {
-                        try {
+                  <TransparentDialogBox
+                    visible={isDialogVisible}
+                    onClose={handleCloseDialog}
+                    title="Remove Folder!"
+                    message="Are you sure you want to remove the folders?"
+                    onYes={ async () => {
+                      handleCloseDialog();
+                       try {
                           const response = await fetch(
                             `${API_BASE_URL}/deleteFolder/1/${data.ID_Folder}`,
                             {
@@ -161,6 +175,45 @@ const FoldersScreen = ({ navigation }) => {
                           console.error("Error deleting folder:", error);
                           // Handle error case here
                         }
+                    }}
+                  />
+                  <Text style={styles.label}>{data.NumOfReceipts - 1} {data.NumOfReceipts == 2 ? 'Receipt' : 'Receipts'}</Text>
+                  {isDeleteSelected ? (
+                    <TouchableOpacity
+                      style={styles.cancelButtonIcon}
+                      onPress={async () => {
+                        // try {
+                        //   const response = await fetch(
+                        //     `${API_BASE_URL}/deleteFolder/1/${data.ID_Folder}`,
+                        //     {
+                        //       method: "DELETE",
+                        //     }
+                        //   );
+
+                        //   if (response.ok) {
+                        //     Toast.show({
+                        //       type: ALERT_TYPE.SUCCESS,
+                        //       title: 'Success',
+                        //       textBody: 'Folder deleted successfully',
+                        //     })
+                        //     handleRefresh()
+                        //   } else {
+                        //     console.error(
+                        //       "Error deleting folder:",
+                        //       response.status
+                        //     );
+                        //     // Handle error case here
+                        //   }
+                        // } catch (error) {
+                        //   Toast.show({
+                        //     type: ALERT_TYPE.DANGER,
+                        //     title: 'Failed',
+                        //     textBody: 'Something went wrong',
+                        //   })
+                        //   console.error("Error deleting folder:", error);
+                        //   // Handle error case here
+                        // }
+                        handleShowDialog(data.ID_Folder)
                       }}
                     >
                       <Image
@@ -171,8 +224,8 @@ const FoldersScreen = ({ navigation }) => {
                     </TouchableOpacity>
                   ) : (
                     <Image
-                        style={styles.arrowRightIcon}
-                        resizeMode="contain"
+                      style={styles.arrowRightIcon}
+                      resizeMode="contain"
                       source={require("../assets/icons/arrowRightIcon.png")}
                     />
                   )}
@@ -180,8 +233,8 @@ const FoldersScreen = ({ navigation }) => {
               </View>
               
             </View>
-          </TouchableOpacity>
-        ))}
+          </TouchableOpacity>)
+        })}
         <View style={styles.divider} />
       </ScrollView>
     </View>
