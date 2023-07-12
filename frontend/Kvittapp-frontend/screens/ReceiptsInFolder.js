@@ -210,7 +210,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
                           selectedFolderColor: folderDetails.Folder_color,
                         });
                         updateIsAddReceiptToFolder(true);
-                        navigation.navigate("Home");
+                        navigation.navigate("Home",  { screen: 'Receipts' });
                       }}
                     />
                     <RectangularButton
