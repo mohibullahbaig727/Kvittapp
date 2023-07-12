@@ -141,7 +141,7 @@ const FoldersScreen = ({ navigation }) => {
                     visible={isDialogVisible}
                     onClose={handleCloseDialog}
                     title="Remove Folder!"
-                    message="Are you sure you want to remove the folders?"
+                    message="Are you sure you want to remove the folder?"
                     onYes={ async () => {
                       handleCloseDialog();
                        try {

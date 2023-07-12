@@ -261,8 +261,16 @@ const Kvitton = ({ route }) => {
               smallButton={true}
               text="cancel"
               function={() => {
+                const ID_Folder = selectedFolderId.selectedFolderId.toString();
+                const Folder_name = selectedFolderId.selectedFolderName.toString();
+                const Folder_color = selectedFolderId.selectedFolderColor.toString();
                 updateIsAddReceiptToFolder(false);
-                contextFunction.updateReceiptToFolderParams(null)
+                contextFunction.updateReceiptToFolderParams(null);
+                navigation.navigate("ReceiptsInFolder", {
+                  data: {ID_Folder, Folder_color, Folder_name,},
+                })
+              
+                
               }}
             />
             <RectangularButton
