@@ -3,7 +3,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 
 const RectangularButton = (props) => {
   return (
-    <TouchableOpacity onPress={props.inactiveButton ? null : props.function}>
+    <TouchableOpacity onPress={props.inactiveButton ? null :  props.function}>
       <View
         style={{
           borderRadius: 4,

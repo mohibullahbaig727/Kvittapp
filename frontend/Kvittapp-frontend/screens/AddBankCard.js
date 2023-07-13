@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Dimensions, StyleSheet, Text, TextInput, View, Platform, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
 import RectangularButton from "../components/RectangularButton";
 import { addCard } from "../services/add";
 import { getCardType } from "../services/handleCardType";
@@ -16,7 +24,8 @@ const AddBankCard = ({ navigation }) => {
   const [show, setShow] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  console.log(cNum, cName, cExp, 'mooo')
+  console.log(cNum, cName, cExp, "mooo");
+  console.log(cNameError, cNumberError, "aaaa");
 
   const handleVerify = async () => {
     // Get the card type using the card number
@@ -29,14 +38,15 @@ const AddBankCard = ({ navigation }) => {
       PO: cardType,
     };
 
-    await addCard(3, cardDetails);
+    await addCard(1, cardDetails);
     navigation.navigate("Cards");
   };
 
   const handleSubmit = () => {
-    if (cNameError) {
+    if (cNameError != "" || cNumberError != "") {
       return;
     }
+    console.log("moooo");
     handleVerify();
   };
 
@@ -59,7 +69,14 @@ const AddBankCard = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flexDirection: "column", padding: 20, backgroundColor: "white", height: "100%" }}>
+    <View
+      style={{
+        flexDirection: "column",
+        padding: 20,
+        backgroundColor: "white",
+        height: "100%",
+      }}
+    >
       <View style={{ alignItems: "flex-end" }}>
         <RectangularButton text="Skanna Kort" smallButton={true} />
       </View>
@@ -90,12 +107,16 @@ const AddBankCard = ({ navigation }) => {
             style={styles.input}
             keyboardType="number-pad"
           />
-          {cNumberError ? <Text style={styles.errorText}>{cNumberError}</Text> : null}
+          {cNumberError ? (
+            <Text style={styles.errorText}>{cNumberError}</Text>
+          ) : null}
         </View>
         <View style={[styles.formField, { flex: 1 }]}>
           <Text style={styles.headingText}>Expiry</Text>
-          <TouchableOpacity onPress={showDatePicker}>
-            <Text style={styles.dateText}>{cExp ? cExp : "Select Expiry Date"}</Text>
+          <TouchableOpacity style={styles.input} onPress={showDatePicker}>
+            <Text style={{ fontSize: 14, fontFamily: "BalooChettan2-Regular" }}>
+              {cExp ? cExp : "Select Expiry Date"}
+            </Text>
           </TouchableOpacity>
           {show && (
             <DateTimePicker
@@ -113,7 +134,7 @@ const AddBankCard = ({ navigation }) => {
           text="Verify"
           inactiveButton={cName == "" || cNum == "" || cExp == ""}
           smallButton={false}
-          onPress={()=>handleVerify} // Update the Verify button's onPress prop
+          function={handleSubmit} // Update the Verify button's onPress prop
         />
       </View>
     </View>
@@ -146,6 +167,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "BalooChettan2-Regular",
     paddingVertical: 8,
+  },
+  button: {
+    backgroundColor: "#81A7FF",
+    borderRadius: 5,
+    paddingVertical: 8,
+    width: 120,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontFamily: "BalooChettan2-Bold",
+    textAlign: "center",
   },
 });
 

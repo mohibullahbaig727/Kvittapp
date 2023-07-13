@@ -229,6 +229,9 @@ async function removeCard(ID_User, cardNumber) {
 
 async function addCard(ID_User, cardNumber, expirationDate, bank, PO) {
   try {
+    // Convert the card number format to "1234 5678 9012 3123"
+    const formattedCardNumber = cardNumber.replace(/(.{4})/g, "$1 ");
+
     let pool = await sql.connect(config);
     let totalCardsAdded = 0; // Set the initial value of totalCardsAdded
     // Fetch the current value of Total_cards_added from the database
@@ -244,16 +247,14 @@ async function addCard(ID_User, cardNumber, expirationDate, bank, PO) {
 
     // Update the column names based on the value of totalCardsAdded
     const cardNumberColumnName = `Card${totalCardsAdded + 1}_cardnumber`;
-    const expirationDateColumnName = `Card${
-      totalCardsAdded + 1
-    }_expiration_date`;
+    const expirationDateColumnName = `Card${totalCardsAdded + 1}_expiration_date`;
     const bankColumnName = `Card${totalCardsAdded + 1}_bank`;
     const POColumnName = `Card${totalCardsAdded + 1}_PO`;
 
     await pool
       .request()
       .input("ID_User", sql.BigInt, ID_User)
-      .input("Card_cardnumber", sql.VarChar(16), cardNumber)
+      .input("Card_cardnumber", sql.VarChar, formattedCardNumber)
       .input("Card_expiration_date", sql.VarChar(5), expirationDate)
       .input("Card_bank", sql.VarChar(100), bank)
       .input("Card_PO", sql.VarChar(100), PO)
@@ -264,7 +265,7 @@ async function addCard(ID_User, cardNumber, expirationDate, bank, PO) {
              ${bankColumnName} = @Card_bank,
              ${POColumnName} = @Card_PO,
              Total_cards_added = Total_cards_added + 1
-             WHERE ID_User = @ID_User`
+         WHERE ID_User = @ID_User`
       );
     return true; // Return true if update is successful
   } catch (errors) {
@@ -272,6 +273,8 @@ async function addCard(ID_User, cardNumber, expirationDate, bank, PO) {
     return false; // Return false if update fails
   }
 }
+
+
 
 //add a return to the db
 async function addReturn(

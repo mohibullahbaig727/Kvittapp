@@ -158,7 +158,6 @@ const CreateFolderDialog = ({ visible, onClose, title, message, onYes }) => {
             <TouchableOpacity style={styles.button} onPress={onClose}>
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
-            <RectangularButton />
             <TouchableOpacity style={[styles.button, {backgroundColor: folderName =="" ? '#e6e6e6' : '#81A7FF'}]} onPress={folderName ==""? null : handleSubmit}>
               <Text style={styles.buttonText}>Create Folder</Text>
             </TouchableOpacity>
