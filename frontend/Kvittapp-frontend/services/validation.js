@@ -21,7 +21,7 @@ export const validateCardNumber = (text) => {
   
     return ""; // Return an empty string if the text is valid
 };
-  
+
 
 export const validateFolderName = (text) => {
     const regex = /^[A-Za-z\s\p{P}]+$/u;
