@@ -45,7 +45,7 @@ const Cards = ({ route, navigation }) => {
   useEffect(() => {
     fetchData();
   }, []);
-
+  
   const fetchData = async () => {
     const cards = [];
     try {
