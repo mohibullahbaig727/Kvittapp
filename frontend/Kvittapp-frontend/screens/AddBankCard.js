@@ -34,7 +34,9 @@ const AddBankCard = ({ navigation }) => {
   };
 
   const handleSubmit = () => {
-   console.log('moooo')
+    if (cNameError) {
+      return;
+    }
     handleVerify();
   };
 

@@ -20,5 +20,20 @@ export const validateCardNumber = (text) => {
     }
   
     return ""; // Return an empty string if the text is valid
+};
+  
+
+export const validateFolderName = (text) => {
+    const regex = /^[A-Za-z\s\p{P}]+$/u;
+  
+    if (text.length > 20) {
+      return "Maximum length exceeded (20 characters)";
+    }
+  
+    if (!regex.test(text)) {
+      return "Only alphabets, punctuation marks, and spaces are allowed";
+    }
+  
+    return ""; // Return an empty string if the text is valid
   };
   
