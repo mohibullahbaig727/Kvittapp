@@ -220,7 +220,7 @@ const KvittoDetails = ({ navigation, route }) => {
                   width: "100%",
                 }}
               >
-                <Text style={styles.columnHeadingText}>Qty</Text>
+                <Text style={styles.columnHeadingText}>Quantity</Text>
                 <Text style={styles.columnHeadingText}>Product</Text>
                 <Text style={styles.columnHeadingText}>Amount</Text>
               </View>
@@ -255,7 +255,7 @@ const KvittoDetails = ({ navigation, route }) => {
                           <Text style={styles.regularText}>
                             {(data?.Unit_price_excl_VAT + data?.VAT_Amount) *
                               data?.Quantity}{" "}
-                            kr
+                            Kr
                           </Text>
                         </View>
                         <View

@@ -71,7 +71,7 @@ const ReceiptsInFolderScreen = ({ route }) => {
             justifyContent: "space-between",
           }}
         >
-          <Text>{item.Total_Amount} kr</Text>
+          <Text>{item.Total_Amount} Kr</Text>
           {isRemoveReciept ? (
             <SquareRadioButton
               label={" "}

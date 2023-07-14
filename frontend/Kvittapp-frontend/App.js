@@ -70,13 +70,13 @@ export default function App() {
                 }}
               >
                 <Tab.Screen
-                  name="Home"
+                  name="Receipts"
                   component={HomeStack}
                   options={({ navigation }) => {
                     return {tabBarIcon: () => (
                       <Image
                         style={{ tintColor: "#81A7FF" }}
-                        source={require("./assets/icons/openbuysIcon.png")}
+                        source={require("./assets/icons/kvittoIcon.png")}
                       />
                     ),
                     tabBarItemStyle: {

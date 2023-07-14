@@ -58,7 +58,7 @@ const Item = ({ item, onPress, icon, contextFunctions }) => (
           justifyContent: "space-between",
         }}
       >
-        <Text>{item.Total_Amount} kr</Text>
+        <Text>{item.Total_Amount} Kr</Text>
         {icon ? (
           <View style={{marginLeft: 8}}>
             <SquareRadioButton

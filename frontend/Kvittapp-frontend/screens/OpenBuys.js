@@ -56,7 +56,7 @@ const Item = ({ item, onPress, daysDiff }) => (
 
           <View style={styles.row}>
             <Text style={{ fontFamily: "BalooChettan2-Regular" }}>
-              {item.Total_Amount} kr
+              {item.Total_Amount} Kr
             </Text>
             <CircularButton marginLeft={6} text=">" />
           </View>

@@ -107,7 +107,7 @@ const ReturnDetails = ({ navigation, route }) => {
         Toast.show({
           type: ALERT_TYPE.SUCCESS,
           title: 'Success',
-          textBody: 'Folder added successfully',
+          textBody: 'Return canceled successfully',
         })
         console.log('Return status updated successfully');
         // Handle success case
@@ -253,7 +253,7 @@ const ReturnDetails = ({ navigation, route }) => {
                   width: "100%",
                 }}
               >
-                <Text style={styles.columnHeadingText}>Qty</Text>
+                <Text style={styles.columnHeadingText}>Quantity</Text>
                 <Text style={styles.columnHeadingText}>Product</Text>
                 <Text style={styles.columnHeadingText}>Amount</Text>
               </View>
