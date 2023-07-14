@@ -99,12 +99,12 @@ const FoldersScreen = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <RectangularButton
           smallButton={true}
-          text="Skappa en mapp"
+          text="Add a Folder"
           function={() => setIsDialogVisible(!isDialogVisible)}
         />
         <RectangularButton
           smallButton={true}
-          text={isDeleteSelected ? "Avbryt" : "Ta bort en mapp"}
+          text={isDeleteSelected ? "Cancel" : "Remove a Folder"}
           function={() => {
             setIsDeleteSelected(!isDeleteSelected);
           }}

@@ -22,43 +22,62 @@ const CreateFolderDialog = ({ visible, onClose, title, message, onYes }) => {
     useContext(CardContext);
   
   const [folderNameError, setFolderNameError] = useState("")
+  const [folderColorCaps, setfolderColorCaps] = useState("")
 
   const dropdownItems = [
     {
       leftIcon: null,
       text: "Black",
       rightIcon: null,
-      functions: () => updateFolderColor("black"),
+      functions: () => {
+        updateFolderColor("black")
+        setfolderColorCaps("Black")
+      },
     },
     {
       leftIcon: null,
       text: "Blue",
       rightIcon: null,
-      functions: () => updateFolderColor("blue"),
+      functions: () => {
+        updateFolderColor("blue")
+        setfolderColorCaps("Blue")
+      },
     },
     {
       leftIcon: null,
       text: "Red",
       rightIcon: null,
-      functions: () => updateFolderColor("red"),
+      functions: () => {
+        updateFolderColor("red")
+        setfolderColorCaps("Red")
+      },
     },
     {
       leftIcon: null,
       text: "Green",
       rightIcon: null,
-      functions: () => updateFolderColor("green"),
+      functions: () => {
+        updateFolderColor("green")
+        setfolderColorCaps("Green")
+      },
     },
     {
       leftIcon: null,
       text: "Pink",
       rightIcon: null,
-      functions: () => updateFolderColor("pink"),
+      functions: () => {
+        updateFolderColor("pink")
+        setfolderColorCaps("Pink")
+      },
     },
     {
       leftIcon: null,
       text: "Gold",
       rightIcon: null,
-      functions: () => updateFolderColor("gold"),
+      functions: () => {
+        updateFolderColor("gold")
+        setfolderColorCaps("Gold")
+      },
     },
   ];
 
@@ -140,7 +159,7 @@ const CreateFolderDialog = ({ visible, onClose, title, message, onYes }) => {
           </View> */}
           <OverlappingDropDown
             leftIcon="md-arrow-dropdown"
-            text={folderColor == "" ? "Select Color" : folderColor}
+            text={folderColorCaps == "" ? "Select Color" : folderColorCaps}
             rightIcon="../assets/icons/arrowDown.png"
             dropDownHeight={195}
             dropdownItems={dropdownItems}
