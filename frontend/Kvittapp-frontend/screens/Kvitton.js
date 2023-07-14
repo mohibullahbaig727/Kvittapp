@@ -259,7 +259,7 @@ const Kvitton = ({ route }) => {
           >
             <RectangularButton
               smallButton={true}
-              text="cancel"
+              text="Cancel"
               function={() => {
                 const ID_Folder = selectedFolderId.selectedFolderId.toString();
                 const Folder_name = selectedFolderId.selectedFolderName.toString();
@@ -275,7 +275,8 @@ const Kvitton = ({ route }) => {
             />
             <RectangularButton
               smallButton={true}
-              text="add receipt"
+              inactiveButton =  {receiptToFolderParams.length == 0}
+              text="Add Receipt"
               function={async () => {
                 const ID_Folder = selectedFolderId.selectedFolderId.toString();
                 const Folder_name = selectedFolderId.selectedFolderName.toString();
